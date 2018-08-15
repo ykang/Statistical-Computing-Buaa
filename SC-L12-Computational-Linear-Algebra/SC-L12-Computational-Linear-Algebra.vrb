@@ -1,0 +1,17 @@
+\frametitle{Outer Products}
+
+  \begin{itemize}
+  \item The function \texttt{outer()} is sometimes useful in
+    statistical calculations. It can be used to perform an operation
+    on all possible pairs of elements coming from two vectors.
+
+  \item Example
+
+\begin{verbatim}
+> x1 <- seq(1, 5)
+> outer(x1, x1, "/")
+> y <- seq(5, 10)
+> outer(x1, y, "+")
+\end{verbatim}
+
+  \end{itemize}

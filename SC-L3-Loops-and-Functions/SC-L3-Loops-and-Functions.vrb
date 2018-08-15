@@ -1,0 +1,20 @@
+\frametitle{Write efficient loops}
+
+  \begin{itemize}
+  \item Avoid loops as much as possible.
+  \item Use \texttt{()apply} type loop if possible.
+  \item Think a lot about under- and over-flow
+  \item Allocate the memory space before looping. This is a much
+    slower loop.
+\begin{verbatim}
+B = matrix(1:10,2,5)
+C = matrix(100:109,2,5)
+A = NULL
+for(i in 1:n)
+{
+  A[i] = B[i] + C[i]
+}
+\end{verbatim}
+
+  \end{itemize}
+
