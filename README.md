@@ -1,10 +1,17 @@
-# Statistical Computing: Crouse Material and Labs
+# Statistical Computing: Crouse Materials and Labs
 
 This is the public release version of my course material for Statistical Computing. For a
 outlook of recent teaching, please visit [https://feng.li/teaching/sc2018spring/]
 
 I hope these materials can help lecturers for their course development in Statistical
-Computing. If you like it, please **star** it.
+Computing. If you like it, please **Star** it.
+
+# Contents
+
+- Slides (with LaTeX source code)
+- R demos
+- Quiz for R basics
+- Sample data
 
 
 # Developed by
@@ -22,8 +29,8 @@ Computing. If you like it, please **star** it.
 
 # Target Students
 
-    Undergraduate students with basic statistical background
-    No programing skills required
+- Undergraduate students with basic statistical background
+- No programing skills required
 
 # Acknowledgements
 
