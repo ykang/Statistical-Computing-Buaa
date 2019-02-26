@@ -1,0 +1,93 @@
+---
+title: "Statistical Computing"
+author: "<br><br>Yanfei Kang <br> yanfeikang@buaa.edu.cn"
+date: "School of Economics and Management <br> Beihang University <br> http://yanfei.site"
+output:
+  ioslides_presentation:
+    logo: ../graphics/buaalogo.png
+    widescreen: yes
+subtitle: 'Lecture 0: Course Introduction'
+---
+
+<style>
+    slides > slide {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff=60),
+                      tidy = TRUE, 
+                      echo = TRUE)
+```
+
+
+## General information 
+
+- **Credits: ** 2 credits
+- **Lecturer: ** Yanfei Kang 
+- **Language: ** Taught in Chinese. Materials are in
+English.
+- **Computer language: R**
+- **Reception hours: ** Questions concerned with this course can be asked during or after each lecture or via email.
+- **Lecture notes: ** available on on https://yanfei.site/teaching/sc.
+
+
+## References
+
+1. [R programming for data science](https://bookdown.org/rdpeng/rprogdatascience/). Roger Peng. Leanpub. 2018.
+2. [Advanced statistical computing](https://bookdown.org/rdpeng/rprogdatascience/). Roger Peng. 2018.
+3. Introduction to scientific programming and simulation using R. Owen Jones, Robert Maillardet, Andrew Robinson. 2nd Edition. CRC press. 2014. ISBN: 9781466569997.
+
+## Unit objectives
+
+![The process of statistical modeling.](./sc.png)
+  
+  
+## Unit objectives
+  
+  1. Learn R programming for data science;
+  2. Learn optimization and simulation tools;
+  3. Develop computational linear algebra techniques, such as eigenanalysis and singular value decomposition and their applications.
+
+
+
+## Examinations
+
+- Assignments (labs): 40\%
+- Final exam: 60\%           
+
+## About assignments 
+
+1. Subject of your email: "SC2019Lab-N-Name-StudentID".
+2. Email attachments: R script named as "SC2019Lab-N-Name-StudentID.R".
+3. **Pls let me know who you are.**
+4. **Pls write a decent email.**
+
+
+## Course contents {.smaller}
+
+- R for data science 
+    + R basics
+    + Managing data frames with the `dplyr` package
+    + Control structures and functions
+    + Dealing with text data
+    + Debugging and Profiling R code
+- Optimization 
+    + Newton's method
+    + Quasi-Newton methods
+    + Derivative free methods
+- Simulation
+    + Independent Monte Carlo
+    + Markov Chain Monte Carlo
+- Computational Linear Algebra 
+    + Eigendecomposition
+    + Singular value decomposition
+    + Numerical algorithms for eigenanalysis
+    + Applications: Classification of handwritten digits and face images
+
+
+
+
