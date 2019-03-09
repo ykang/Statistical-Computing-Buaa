@@ -367,7 +367,7 @@ f(-1)</pre>
 system.time(readLines(&quot;http://www.jhsph.edu&quot;))</pre>
 
 <pre >##    user  system elapsed 
-##   0.049   0.005   3.864</pre>
+##   0.042   0.005   4.956</pre>
 
 <p>The elapsed time may be <em>smaller than</em> the user time if your machine has multiple cores/processors (and is capable of using them).</p>
 
@@ -385,7 +385,7 @@ system.time(aaply(1:10000, 1, function(x) rnorm(1, mean = x),
     .parallel = TRUE))</pre>
 
 <pre >##    user  system elapsed 
-##   3.708   0.762   2.455</pre>
+##   3.790   0.745   2.518</pre>
 
 </article></slide><slide class=""><hgroup><h2>Timing Longer Expressions</h2></hgroup><article  id="timing-longer-expressions">
 
@@ -401,7 +401,7 @@ system.time(aaply(1:10000, 1, function(x) rnorm(1, mean = x),
 })</pre>
 
 <pre >##    user  system elapsed 
-##   0.107   0.004   0.111</pre>
+##   0.105   0.004   0.109</pre>
 
 <p>If your expression is getting pretty long (more than 2 or 3 lines), it might be better to either break it into smaller pieces or to use the profiler. The problem is that if the expression is too long, you won&#39;t be able to identify which part of the code is causing the bottleneck.</p>
 

@@ -1,0 +1,416 @@
+---
+title: "Statistical Computing"
+author: "<br><br>Yanfei Kang <br> yanfeikang@buaa.edu.cn"
+date: "School of Economics and Management <br> Beihang University <br> http://yanfei.site"
+output:
+  ioslides_presentation:
+    logo: ../graphics/buaalogo.png
+    widescreen: yes
+subtitle: 'Lecture 6: Newton Method'
+---
+
+<style>
+    slides > slide {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff=60),
+                      tidy = TRUE, 
+                      echo = TRUE)
+options(width = 60)
+```
+
+## Optimisation in Business
+
+Many problems in business require something to be minimized or maximized.
+
+- Maximizing Revenue
+- Minimizing Costs
+- Minimizing Delivery Time
+- Maximizing Financial Returns
+
+## Optimisation in Statistics
+
+- Maximum Likelihood 
+- Least Squares
+- Method of Moments 
+- Posterior Mode
+
+## Optimisation
+
+- Suppose we want to find an minimum or maximum of a function $f(x)$.
+- Sometimes $f(x)$ will be very complicated.
+- Are there computer algorithms that can help?
+- Yes!
+
+# Root Finding
+## Root Finding
+
+- Consider the problem of finding the root of a function.
+- For the function $f(x)$, the root is the point $x^*$ such that $f(x^*) = 0$.
+- An algorithm for solving this problem was proposed by Newton and Raphson nearly 500 years ago.
+
+
+## Newton-Raphson Method
+
+- Newton-Raphson is an iterative method that begins with an initial guess of the root. 
+- The method uses the derivative of the function $f^{'}(x)$ as well as the original function $f(x)$.
+- When successful,  it converges (usually) rapidly, but may fail as any other root-finding algorithm.
+
+## Newton-Raphson Method
+
+The method tries to solve an equation in the form of $g(x) = 0$ through the iterative procedure: $$x_{n+1} = x_n - \frac{f(x_n)}{f^{'}(x_n)}.$$
+
+Please think about **Taylor expansion**.
+
+## Geometric interpretation
+<center>
+![Newton Method](https://upload.wikimedia.org/wikipedia/commons/e/e0/NewtonIteration_Ani.gif)
+</center>
+
+## Stopping Rule
+
+- With each step the algorithm should get closer to the root.
+- However, it can run for a long time without reaching the exact root.
+- There must be a stopping rule otherwise the program could run forever.
+- Let $\epsilon$ be an extremely small number e.g. $1 \times 10^{-10}$ called the **tolerance level**.
+- If $|f(x^{*})| < \epsilon$ then the solution is close enough and there is a root at $x^{*}$.
+
+## Example
+
+- Now find the root of $f(x) = x^2 - 4$ using Newton method by hand.
+- Tell about its geometric interpretation.
+
+## Newton-Raphson Method
+
+1. Select an initial guess $x_0$, and set $n = 0$.
+2. Set $x_{n+1} = x_n - \frac{f(x_n)}{f^{'}(x_n)}$.
+3. Evaluate $|f(x_{n+1})|$.
+
+    1. If $|f(x_{n+1})| < \epsilon$, then stop;
+    2. Otherwise set $n=n+1$ and go back to step 2.
+  
+
+
+# Lab Session 5
+
+## 
+
+1. Write R code to find the root of $x^2 = 4$.
+2. Now use your Newton-Raphson code to find the root of $g(x) = \sqrt{|x|}$. Try initial value 0.25.
+3. Now use your Newton-Raphson code to find the root of $x e^{-x^2} = 0.4(e^x + 1)^{-1} + 0.2$. Try initial values 0.5 and 0.6.
+
+What did you learn from mistakes?
+
+
+## Learn from Mistakes
+
+- For some functions, using some certain starting values leads to a series that converges, while other starting values lead to a series that diverges.
+- For other functions different starting values converge to different roots.
+- Be careful when choosing the initial value.
+
+
+# Optimisation
+
+##
+
+### Can we change the algorithm slightly so that it works for optimization?
+
+## Finding a Maximum or Minimum
+
+- Suppose we want to find an minimum or maximum of a function $f(x)$ (think about maximum likelihood estimation).
+- Find the derivative $f^{'}(x)$  and find $x^{*}$ such that $f^{'}(x^*) = 0$.
+- This is the same as finding a root of the first derivative. We can use the Newton Raphson algorithm on the first derivative.
+
+## Newton Raphson algorithm for finding local maxima or minima
+
+
+1. Select an initial guess $x_0$, and set $n = 0$.
+2. Set $x_{n+1} = x_n - \frac{f^{'}(x_n)}{f^{''}(x_n)}$.
+3. Evaluate $|f^{'}(x_{n+1})|$.
+
+    1. If $|f^{'}(x_{n+1})| < \epsilon$, then stop;
+    2. Otherwise set $n=n+1$ and go back to step 2.
+ 
+## Different Stopping Rules
+
+Three stopping rules can be used.
+
+- $|f^{'}(x_{n+1})| < \epsilon$.
+- $|x_{n} - x_{n-1}| < \epsilon$.
+- $|f(x_{n}) - f(x_{n-1})| < \epsilon$.
+
+## Intuition
+
+- Focus the step size $-\frac{f'(x)}{f''(x)}$.
+- The signs of the derivatives control the direction of the next step.
+- The size of the derivatives control the size of the next step.
+- Consider the concave function $f(x)=-x^4$ which has $f'(x)=-4x^3$ and $f''(x)=-12x^2$. There is a maximum at $x^{*}=0$.
+
+## Role of first derivative
+<center>
+![Newton Method](RCode/climb1.pdf)
+</center>
+
+## Role of first derivative
+<center>
+![Newton Method](RCode/climb2.pdf)
+</center>
+
+## Role of first derivative
+<center>
+![Newton Method](RCode/climb3.pdf)
+</center>
+
+## Role of first derivative
+
+
+- If $f''(x)$ is negative the function is locally {\bf concave}, and the search is for a local maximum.
+- To the left of this maximum $f'(x)>0$.
+- Therefore $-\frac{f'(x)}{f''(x)}>0$.
+- The next step is to the right.
+- The reverse holds if $f'(x)<0$.
+- Large absolute values of $f'(x)$ imply a steep slope.  A big step is needed to get close to the optimum.  The reverse hold for small absolute value of $f'(x)$.
+
+## Role of first derivative
+- If $f''(x)$ is positive the function is locally  convex, and the search is for a local minimum.
+- To the left of this maximum $f'(x)<0$.
+- Therefore $-\frac{f'(x)}{f''(x)}>0$.
+- The next step is to the right.
+- The reverse holds if $f'(x)>0$.
+- Large absolute values of $f'(x)$ imply a steep slope.  A big step is needed to get close to the optimum.  The reverse hold for small absolute value of $f'(x)$.
+
+## Role of second derivative
+<center>
+![Newton Method](RCode/climb4.pdf)
+</center>
+
+## Role of second derivative
+- Together with the sign of the first derivative, the sign of the second derivative controls the direction of the next step.
+- A larger second derivative (in absolute value) implies a more curvature
+- In this case smaller steps are need to stop the algorithm from overshooting.
+- The opposite holds for a small second derivative.
+
+
+
+
+
+# Multidimensional Optimization
+
+## Functions with more than one input
+
+- Most interesting optimization problems involve multiple inputs.
+    - In determining the most risk efficient portfolio the return is a function of many weights (one for each asset).
+    - In least squares estimation for a linear regression model, the sum of squares is a function of many coefficients (one for each regressor).
+- How do we optimize for functions $f({x})$ where ${x}$ is a vector?
+
+## Derviatives
+
+- Newton's algorithm has a simple update rule based on first and second derivatives.
+- What do these derivatives look like when the function is $y=f({x})$ where $y$ is a scalar and ${x}$ is a $d\times 1$ vector?
+
+## First derivative
+
+Simply take the partial derivatives and put them in a vector
+$$
+    \frac{\partial y}{\partial{x}}=
+    \left(
+      \begin{array}{c}
+        \frac{\partial y}{\partial x_1}\\
+        \frac{\partial y}{\partial x_2}\\
+        \vdots\\
+        \frac{\partial y}{\partial x_d}
+      \end{array}
+    \right)$$
+This is called the gradient vector.
+
+## An example
+
+The function $y=x_1^2-x_1x_2+x_2^2+e^{x_2}$ has gradient vector
+
+$$\frac{\partial y}{\partial{x}}=\left(\begin{array}{c}
+                                               2x_1-x_2\\
+                                               -x_1+2x_2+e^{x_2}
+                                             \end{array}
+                                           \right).$$
+                                           
+## Second derivative
+Simply take the second order partial derivatives.  This will give a matrix
+$$
+                                           \frac{\partial y}{\partial{x}\partial{x}'}=
+                                           \left(
+                                             \begin{array}{cccc}
+                                               \frac{\partial^2 y}{\partial x_1^2}&\frac{\partial^2 y}{\partial x_1\partial x_2}&\cdots&\frac{\partial^2 y}{\partial x_1\partial x_d}\\
+                                               \frac{\partial^2 y}{\partial x_2\partial x_1}&\frac{\partial^2 y}{\partial x_2^2}&\cdots&\frac{\partial^2 y}{\partial x_2\partial x_d}\\
+                                               \vdots&\vdots&\ddots&\vdots\\
+                                               \frac{\partial^2 y}{\partial x_d\partial x_1}&\frac{\partial^2 y}{\partial x_d\partial x_2}&\cdots&\frac{\partial^2 y}{\partial x_d^2}\\
+                                             \end{array}
+                                           \right).$$
+
+This is called the Hessian matrix.
+
+## An example
+The function $y=x_1^2-x_1x_2+x_2^2+e^{x_2}$ has Hessian matrix
+$$\frac{\partial y}{\partial{ x}\partial{ x}'}=\left(\begin{array}{cc}
+                                                                                                      2 & -1\\
+                                                                                                      -1 & 2 + e^{x_2}
+                                                                                                    \end{array}
+                                                                                                  \right)
+                                           $$
+                                           
+## Preliminaries for matrix derivatives
+
+
+The derivative of a vector $\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_m \\ \end{bmatrix}$ , by a scalar $x$ is written (in numerator layout notation) as
+  $$\begin{align*}
+    \frac{\partial \mathbf{y}}{\partial x} = \begin{bmatrix} \frac{\partial y_1}{\partial x}\\ \frac{\partial y_2}{\partial x}\\ \vdots\\ \frac{\partial y_m}{\partial x}\\ \end{bmatrix}.
+  \end{align*}$$
+  
+In vector calculus the derivative of a vector $y$ with respect to a scalar $x$ is known as the tangent vector of the vector $y$, $\frac{\partial \mathbf{y}}{\partial x}$.
+
+## Preliminaries for matrix derivatives
+The derivative of a scalar $y$ by a vector $\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ , is written (in numerator layout notation) as
+$$
+  \begin{align*}
+    \frac{\partial y}{\partial \mathbf{x}} = \left[ \frac{\partial y}{\partial x_1} \ \ \frac{\partial y}{\partial x_2} \ \ \cdots \ \ \frac{\partial y}{\partial x_n} \right].
+  \end{align*}
+$$
+
+## Preliminaries for matrix derivatives
+
+The second order derivatives of a scalar $y$ by a vector $\mathbf{x}
+  = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ is written (in numerator layout notation) as
+$$
+  \begin{align*}
+    \frac{\partial^2 y}{\partial \mathbf{x}\partial \mathbf{x}'}&=\frac{\partial
+    }{\partial \mathbf{x}'}\left[\frac{\partial y}{\partial \mathbf{x}}\right]=\frac{\partial}{\partial \mathbf{x}'}\left[ \frac{\partial y}{\partial x_1} \ \ \frac{\partial y}{\partial x_2} \ \ \cdots \ \ \frac{\partial y}{\partial x_n} \right] \\&= \begin{bmatrix} \frac{\partial^2 y}{\partial x_1^2} & \frac{\partial^2 y}{\partial x_1\partial x_2} & \cdots & \frac{\partial^2 y}{\partial x_1\partial x_n}\\ \frac{\partial^2 y}{\partial x_2\partial x_1} & \frac{\partial^2 y}{\partial x_2^2} & \cdots & \frac{\partial^2 y}{\partial x_2\partial x_n}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial^2 y}{\partial x_m\partial x_1} & \frac{\partial^2 y}{\partial x_m\partial x_2} & \cdots & \frac{\partial^2 y}{\partial x_m\partial x_m}\\ \end{bmatrix}.
+  \end{align*}
+$$
+
+## Preliminaries for matrix derivatives
+
+The derivative of a vector function (a vector whose components are functions) $\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_m \\ \end{bmatrix}$ , with respect to an input vector, $\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ , is written (in numerator layout notation) as
+$$
+  \begin{align*}
+    \frac{\partial \mathbf{y}}{\partial \mathbf{x}} = \begin{bmatrix} \frac{\partial y_1}{\partial x_1} & \frac{\partial y_1}{\partial x_2} & \cdots & \frac{\partial y_1}{\partial x_n}\\ \frac{\partial y_2}{\partial x_1} & \frac{\partial y_2}{\partial x_2} & \cdots & \frac{\partial y_2}{\partial x_n}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y_m}{\partial x_1} & \frac{\partial y_m}{\partial x_2} & \cdots & \frac{\partial y_m}{\partial x_n}\\ \end{bmatrix}.
+  \end{align*}
+$$
+
+## Preliminaries for matrix derivatives
+
+ The derivative of a matrix function $Y$ by a scalar $x$ is known as the tangent
+  matrix and is given (in numerator layout notation) by
+  $$
+  \begin{align*}
+    \frac{\partial \mathbf{Y}}{\partial x} = \begin{bmatrix} \frac{\partial y_{11}}{\partial x} & \frac{\partial y_{12}}{\partial x} & \cdots & \frac{\partial y_{1n}}{\partial x}\\ \frac{\partial y_{21}}{\partial x} & \frac{\partial y_{22}}{\partial x} & \cdots & \frac{\partial y_{2n}}{\partial x}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y_{m1}}{\partial x} & \frac{\partial y_{m2}}{\partial x} & \cdots & \frac{\partial y_{mn}}{\partial x}\\ \end{bmatrix}.
+  \end{align*}
+$$
+
+## Preliminaries for matrix derivatives
+
+ The derivative of a scalar $y$ function of a matrix $X$ of independent variables, with respect to the matrix $X$, is given (in numerator layout notation) by
+$$
+  \begin{align*}
+    \frac{\partial y}{\partial \mathbf{X}} = \begin{bmatrix} \frac{\partial y}{\partial x_{11}} & \frac{\partial y}{\partial x_{21}} & \cdots & \frac{\partial y}{\partial x_{p1}}\\ \frac{\partial y}{\partial x_{12}} & \frac{\partial y}{\partial x_{22}} & \cdots & \frac{\partial y}{\partial x_{p2}}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y}{\partial x_{1q}} & \frac{\partial y}{\partial x_{2q}} & \cdots & \frac{\partial y}{\partial x_{pq}}\\ \end{bmatrix}.
+  \end{align*}
+$$
+
+## Newton’s algorithm for multidimensional optimization
+
+We can now generalise the update step in Newton's method:
+                                                                      $$                      x_{n+1}=x_n-\left(\frac{\partial^2 f({ x})}{\partial {x}\partial{ x}'}\right)^{-1}
+                                                                                                  \frac{\partial f({ x})}{\partial { x}}$$
+
+Now write code to minimise $y=x_1^2-x_1x_2+x_2^2+e^{x_2}$.
+
+## The linear regression model, a revisit
+
+- Consider the linear regression model with multiple covariates,
+$$
+    y_i = \beta_0 + \beta_1x_1+...+\beta_p x_p + \epsilon_i,
+$$
+where $\epsilon_i \sim N(0, \sigma^2)$
+- What is the gradient and Hessian matrix for the log likelihood ($\mathcal{L}$)
+  with respect to the parameter vector $\mathbf{\beta}=(\beta_0,...,\beta_p)$?
+
+$$
+    \frac{\partial log \mathcal{L}}{\partial \mathbf{\beta}} = ?
+$$
+
+$$
+    \frac{\partial^2 log \mathcal{L}}{\partial \mathbf{\beta} \partial \mathbf{\beta}'}
+    = ?
+$$
+
+## Maximum likelihood Estimate for linear models
+
+- Assume you want to make a regression model
+$$
+      y_i = \beta_0 + \beta_1 x_i + \epsilon_i,
+$$
+where $\epsilon_i \sim N(0, \sigma^2)$
+- What is the (log) likelihood function?
+- What are the unknown parameters?
+- How do we estimate the parameters? Let's consider three situations
+    - When $\beta_0=1$ and $\sigma^2=1$ known.
+    - When $\sigma^2=1$ known.
+    - Neither $\beta$ nor $\sigma$ is known.
+- Write down the likelihood function with respect to the unknown parameters.
+- Write down the gradient for the likelihood function.
+- Write down the Hessian for the likelihood function.
+- Use Newton's method to obtain the best parameter estimate.
+
+## Optimizing the likelihood function by using `optim()`
+
+```r
+## Generate some data
+beta0 <- 1
+beta1 <- 3
+sigma <- 1
+n <- 1000
+x <- rnorm(n, 3, 1)
+y <- beta0 + x*beta1 + rnorm(n, mean = 0, sd = sigma)
+plot(x, y, col = "blue", pch = 20)
+
+## The optimization
+optimOut <- optim(c(0, -1, 0.1), logNormLikelihood,
+                  control = list(fnscale = -1),
+                  x = x, y = y)
+beta0Hat <- optimOut$par[1]
+beta1Hat <- optimOut$par[2]
+sigmaHat <- optimOut$par[3]
+yHat <- beta0Hat + beta1Hat*x
+
+plot(x, y, pch = 20, col = "blue")
+points(sort(x), yHat[order(x)], type = "l", col = "red", lwd = 2)
+```
+
+## Comparison with OLS
+
+```r
+myLM <- lm(y~x)
+myLMCoef <- myLM$coefficients
+yHatOLS <- myLMCoef[1] + myLMCoef[2]*x
+plot(x, y, pch = 20, col = "blue")
+points(sort(x), yHat[order(x)], type = "l", col = "red", lwd = 10)
+points(sort(x), yHatOLS[order(x)], type = "l",
+       col = "blue", lty="dashed", lwd = 2, pch = 20)
+```
+ 
+# Lab Session 6
+##
+
+Use Newton’s method to find the maximum likelihood estimate for the coefficients in a logistic regression. The steps are:
+
+1. Write down likelihood function
+2. Find the gradient and Hessian matrix
+3. Code these up in R
+4. Simulate some data from a logistic regression model. ‚ Test your code.
+
+## References
+
+Chapters 10 and 12 of the book "Introduction to Scientific Programming and Simulation Using R".
