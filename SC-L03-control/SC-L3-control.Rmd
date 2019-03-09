@@ -1,0 +1,846 @@
+---
+title: "Statistical Computing"
+author: "<br><br>Yanfei Kang <br> yanfeikang@buaa.edu.cn"
+date: "School of Economics and Management <br> Beihang University <br> http://yanfei.site"
+output:
+  ioslides_presentation:
+    logo: ../graphics/buaalogo.png
+    widescreen: yes
+subtitle: 'Lecture 3: Control structures and functions'
+---
+
+<style>
+    slides > slide {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff=60),
+                      tidy = TRUE, 
+                      echo = TRUE)
+```
+
+
+# Control structures
+
+## Commonly used control structures 
+
+- `if` and `else`: testing a condition and acting on it
+
+- `for`: execute a loop a fixed number of times 
+
+- `while`: execute a loop _while_ a condition is true 
+
+- `repeat`: execute an infinite loop (must `break` out of it to stop)
+
+- `break`: break the execution of a loop
+
+- `next`: skip an interation of a loop
+
+## `if`-`else`
+
+
+The `if`-`else` combination is probably the most commonly used control
+structure in R (or perhaps any language). For starters, you can just use the `if` statement.
+
+```r
+if(<condition>) {
+        ## do something
+} 
+## Continue with rest of code
+```
+
+## `if`-`else`
+
+If you have an
+action you want to execute when the condition is false, then you need
+an `else` clause.
+```r
+if(<condition>) {
+        ## do something
+} 
+else {
+        ## do something else
+}
+```
+You can have a series of tests by following the initial `if` with any
+number of `else if`s.
+```r
+if(<condition1>) {
+        ## do something
+} else if(<condition2>)  {
+        ## do something different
+} else {
+        ## do something different
+}
+```
+
+## `if`-`else` Example
+
+```{r,prompt=FALSE}
+## Generate a uniform random number
+x <- runif(1, 0, 10)  
+if(x > 3) {
+        y <- 10
+} else {
+        y <- 0
+}
+```
+
+Or you can write:
+
+```{r,prompt=FALSE}
+y <- if(x > 3) {
+        10
+} else { 
+        0
+}
+```
+
+
+## `for` Loops
+
+For loops are most commonly used for
+iterating over the elements of an object (list, vector, etc.)
+```{r}
+for(i in 1:10) {
+        print(i)
+}
+```
+
+## `for` Loops Example
+The following three loops all have the same behavior.
+
+```{r}
+x <- c("a", "b", "c", "d")
+for(i in 1:4) {
+        ## Print out each element of 'x'
+        print(x[i])  
+}
+```
+
+The `seq_along()` function is commonly used in conjunction with for
+loops in order to generate an integer sequence based on the length of
+an object (in this case, the object `x`).
+
+```{r}
+## Generate a sequence based on length of 'x'
+for(i in seq_along(x)) {   
+        print(x[i])
+}
+```
+
+It is not necessary to use an index-type variable. 
+
+```{r}
+for(letter in x) {
+        print(letter)
+}
+```
+
+## Nested `for` loops
+
+`for` loops can be nested inside of each other.
+
+```r
+x <- matrix(1:6, 2, 3)
+for(i in seq_len(nrow(x))) {
+        for(j in seq_len(ncol(x))) {
+                print(x[i, j])
+        }   
+}
+```
+
+Nested loops are commonly needed for multidimensional or hierarchical
+data structures (e.g. matrices, lists). 
+
+
+## `while` Loops
+
+
+While loops begin by testing a condition. If it is true, then they
+execute the loop body. Once the loop body is executed, the condition
+is tested again, and so forth, until the condition is false, after
+which the loop exits.
+
+```{r}
+count <- 0
+while(count < 10) {
+        print(count)
+        count <- count + 1
+}
+```
+
+While loops can potentially result in infinite loops if not written
+properly. Use with care!
+
+
+
+
+## `repeat` Loops
+
+
+`repeat` initiates an infinite loop right from the start. The only way to exit a `repeat` loop is to
+call `break`.
+
+
+```{r,eval=FALSE,prompt=FALSE}
+x0 <- 1
+tol <- 1e-8
+repeat {
+        x1 <- computeEstimate()
+        
+        if(abs(x1 - x0) < tol) {  ## Close enough?
+                break
+        } else {
+                x0 <- x1
+        } 
+}
+```
+
+
+
+## `next`, `break`
+
+`next` is used to skip an iteration of a loop. 
+
+```{r,eval=FALSE,prompt=FALSE}
+for(i in 1:100) {
+        if(i <= 20) {
+                ## Skip the first 20 iterations
+                next                 
+        }
+        ## Do something here
+}
+```
+
+`break` is used to exit a loop immediately, regardless of what
+iteration the loop may be on.
+
+```{r,eval=FALSE,prompt=FALSE}
+for(i in 1:100) {
+      print(i)
+      if(i > 20) {
+              ## Stop loop after 20 iterations
+              break  
+      }		
+}
+```
+
+## Summary
+
+- Control structures like `if`, `while`, and `for` allow you to
+  control the flow of an R program
+
+- Infinite loops should generally be avoided, even if (you believe)
+  they are theoretically correct.
+
+- Control structures mentioned here are primarily useful for writing
+  programs; for command-line interactive work, the "apply" functions
+  are more useful.
+  
+# Functions
+
+## Functions
+
+- A transition from a mere "user" to a developer!
+- Often used to
+encapsulate a sequence of expressions that need to be executed
+numerous times, perhaps under slightly different conditions. 
+- Often written when code must be shared with others or the
+public. 
+
+
+
+## Your First Function
+
+Functions are defined using the `function()` directive and are stored
+as R objects just like anything else. In particular, they are R
+objects of class "function".
+
+
+```{r}
+f <- function() {
+        cat("Hello, world!\n")
+}
+f()
+```
+
+The last aspect of a basic function is the *function arguments*.
+
+```{r}
+f <- function(num) {
+        for(i in seq_len(num)) {
+                cat("Hello, world!\n")
+        }
+}
+f(3)
+```
+
+## When to Write a Function?
+
+If you find yourself doing a lot of cutting and pasting, that's usually a good sign that you might need to write a function.
+
+This next function returns the total number of characters printed to the console.
+
+```{r}
+f <- function(num) {
+        hello <- "Hello, world!\n"
+        for(i in seq_len(num)) {
+                cat(hello)
+        }
+        chars <- nchar(hello) * num
+        chars
+}
+meaningoflife <- f(3)
+print(meaningoflife)
+```
+
+## Default Values
+
+Try this:
+
+```{r, eval=FALSE}
+f()
+```
+
+We can modify this behavior by setting a *default value* for the argument `num`. 
+
+```{r}
+f <- function(num = 1) {
+        hello <- "Hello, world!\n"
+        for(i in seq_len(num)) {
+                cat(hello)
+        }
+        chars <- nchar(hello) * num
+        chars
+}
+f()    ## Use default value for 'num'
+f(2)   ## Use user-specified value
+```
+
+
+
+At this point, we have written a function that 
+
+* has one *formal argument* named `num` with a *default value* of 1. The _formal arguments_ are the arguments included in the function definition. The `formals()` function returns a list of all the formal arguments of a function 
+
+* prints the message "Hello, world!" to the console a number of times indicated by the argument `num`
+
+* *returns* the number of characters printed to the console
+
+
+
+## Argument Matching
+
+R assigns the first value to the first argument, the second value to second argument, etc. So in the following call to `rnorm()`
+
+```{r}
+str(rnorm)
+mydata <- rnorm(100, 2, 1)              ## Generate some data
+```
+
+100 is assigned to the `n` argument, 2 is assigned to the `mean` argument, and 1 is assigned to the `sd` argument, all by positional matching.
+
+
+```{r}
+## Positional match first argument, default for 'na.rm'
+sd(mydata)                     
+## Specify 'x' argument by name, default for 'na.rm'
+sd(x = mydata)                 
+## Specify both arguments by name
+sd(x = mydata, na.rm = FALSE)  
+```
+
+When specifying the function arguments by name, it doesn't matter in what order you specify them. 
+
+```{r}
+## Specify both arguments by name
+sd(na.rm = FALSE, x = mydata)     
+```
+
+You can mix positional matching with matching by name. 
+
+```{r}
+sd(na.rm = FALSE, mydata)
+```
+
+Here, the `mydata` object is assigned to the `x` argument, because it's the only argument not yet specified.
+
+Below is the argument list for the `lm()` function, which fits linear models to a dataset.
+
+```{r}
+args(lm)
+```
+
+The following two calls are equivalent.
+
+```r
+lm(data = mydata, y ~ x, model = FALSE, 1:100)
+lm(y ~ x, mydata, 1:100, model = FALSE)
+```
+
+
+
+Function arguments can also be _partially_ matched, which is useful for interactive work. The order of operations when given an argument is
+
+1. Check for exact match for a named argument
+2. Check for a partial match
+3. Check for a positional match
+
+
+
+## The `...` Argument
+
+- There is a special argument in R known as the `...` argument, which indicate a variable number of arguments that are usually passed on to other functions. 
+- The `...` argument is often used when extending another function and you don’t want to copy the entire argument list of the original function
+
+- For example, a custom mean function may want to make use of the default `mean()` function along with its entire argument list. The function below changes the default for the `na.rm` argument to the value `na.rm = "TRUE"` (the original default was `na.rm = "FALSE"`).
+
+```r
+mymean <- function(x, na.rm = TRUE, ...) {
+        mean(x, na.rm = na.rm, ...)         ## Pass '...' to 'mean?rnorm' function
+}
+x <- c(1, 2, NA)
+mean(x)
+mymean(x)
+```
+
+
+
+
+## Summary
+
+* Functions can be defined using the `function()` directive and are assigned to R objects just like any other R object
+
+* Functions have can be defined with named arguments; these function arguments can have default values
+
+* Functions arguments can be specified by name or by position in the argument list
+
+* Functions always return the last expression evaluated in the function body
+
+* A variable number of arguments can be specified using the special `...` argument in a function definition.
+
+# Looping Functions
+
+## Looping on the Command Line
+
+Writing `for` and `while` loops is useful when programming but not
+particularly easy when working interactively on the command
+line. Multi-line expressions with curly braces are just not that easy to sort through when working on the command line. R has some functions which implement looping in a compact form to make your life
+easier.
+
+- `lapply()`: Loop over a list and evaluate a function on each element 
+
+- `sapply()`: Same as `lapply` but try to simplify the result
+
+- `apply()`: Apply a function over the margins of an array
+
+- `tapply()`: Apply a function over subsets of a vector
+
+- `mapply()`: Multivariate version of `lapply`
+
+
+
+## `lapply()`
+
+
+The `lapply()` function does the following simple series of operations:
+
+1. it loops over a list, iterating over each element in that list
+2. it applies a *function* to each element of the list (a function that you specify)
+3. and returns a list (the `l` is for "list"). 
+
+This function takes three arguments: (1) a list `X`; (2) a function (or the name of a function) `FUN`; (3) other arguments via its `...` argument. If `X` is not a list, it will be coerced to a list using `as.list()`.
+
+
+## `lapply()` Example 1
+
+Here's an example of applying the `mean()` function to all elements of a list. If the original list has names, the the names will be preserved in the output.
+
+
+```{r}
+x <- list(a = 1:5, b = rnorm(10))
+lapply(x, mean)
+```
+
+Notice that here we are passing the `mean()` function as an argument to the `lapply()` function. Functions in R can be used this way and can be passed back and forth as arguments just like any other object. When you pass a function to another function, you do not need to include the open and closed parentheses `()` like you do when you are *calling* a function.
+
+## `lapply()` Example 2
+
+```{r}
+x <- list(a = 1:4, b = rnorm(10), c = rnorm(20, 1), d = rnorm(100, 5))
+lapply(x, mean)
+```
+
+## `lapply()` Example 3
+
+```{r}
+x <- 1:4
+lapply(x, runif)
+```
+
+
+
+Now how about other arguments?
+
+Here, the `min = 0` and `max = 10` arguments are passed down to `runif()` every time it gets called.
+
+```{r}
+x <- 1:4
+lapply(x, runif, min = 0, max = 10)
+```
+
+
+
+## `lapply()` Example 4
+
+Here I am creating a list that contains two matrices.
+
+```{r}
+x <- list(a = matrix(1:4, 2, 2), b = matrix(1:6, 3, 2)) 
+x
+```
+
+- How do you extract the first column of each matrix in the list?  
+- Now you need an anonymous function for extracting the first column of each matrix.
+
+```{r}
+lapply(x, function(elt) { elt[,1] })
+```
+
+I can also define the function separately. 
+
+```{r}
+f <- function(elt) {
+        elt[, 1]
+}
+lapply(x, f)
+```
+
+
+
+## `sapply()`
+
+The `sapply()` function behaves similarly to `lapply()`; the only real difference is in the return value. `sapply()` will try to simplify the result of `lapply()` if possible. Essentially, `sapply()` calls `lapply()` on its input and then applies the following algorithm:
+
+- If the result is a list where every element is length 1, then a vector is returned
+
+- If the result is a list where every element is a vector of the same length (> 1), a matrix is returned.
+
+- If it can’t figure things out, a list is returned
+
+Here's the result of calling `lapply()`.
+
+```{r}
+x <- list(a = 1:4, b = rnorm(10), c = rnorm(20, 1), d = rnorm(100, 5))
+lapply(x, mean)
+```
+
+
+Here's the result of calling `sapply()` on the same list.
+
+```{r}
+sapply(x, mean) 
+```
+
+
+
+
+
+## `split()`
+
+
+The `split()` function takes a vector or other objects and splits it into groups determined by a factor or list of factors.
+
+The arguments to `split()` are
+
+```{r}
+str(split)
+```
+
+where
+
+- `x` is a vector (or list) or data frame
+- `f` is a factor (or coerced to one) or a list of factors
+- `drop` indicates whether empty factors levels should be dropped
+
+The combination of `split()` and a function like `lapply()` or `sapply()` is a common paradigm in R.
+
+## `split()` Example
+
+Here we simulate some data and split it according to a factor variable. Note that we use the `gl()` function to "generate levels" in a factor variable.
+
+```{r}
+x <- c(rnorm(10), runif(10), rnorm(10, 1))
+f <- gl(3, 10)
+split(x, f)
+```
+
+A common idiom is `split` followed by an `lapply`.
+
+```{r}
+lapply(split(x, f), mean)
+```
+
+## Splitting a Data Frame
+
+```{r}
+library(datasets)
+head(airquality)
+```
+
+
+We can split the `airquality` data frame by the `Month` variable so that we have separate sub-data frames for each month.
+
+```{r}
+s <- split(airquality, airquality$Month)
+str(s)
+```
+
+Then we can take the column means for `Ozone`, `Solar.R`, and `Wind` for each sub-data frame.
+
+```{r}
+lapply(s, function(x) {
+        colMeans(x[, c("Ozone", "Solar.R", "Wind")], na.rm = TRUE)
+})
+```
+
+Using `sapply()` might be better here for a more readable output.
+
+```{r}
+sapply(s, function(x) {
+        colMeans(x[, c("Ozone", "Solar.R", "Wind")], na.rm = TRUE)
+})
+```
+
+
+
+## `tapply()`
+
+`tapply()` is used to apply a function over subsets of a vector. It can be thought of as a combination of `split()` and `sapply()` for vectors only. 
+
+```{r}
+str(tapply)
+```
+
+The arguments to `tapply()` are as follows:
+
+- `X` is a vector
+- `INDEX` is a factor or a list of factors (or else they are coerced to factors) 
+- `FUN` is a function to be applied
+- ... contains other arguments to be passed `FUN`
+- `simplify`, should we simplify the result?
+
+## `tapply()` Example
+Given a vector of numbers, one simple operation is to take group means.
+
+```{r}
+## Simulate some data
+x <- c(rnorm(10), runif(10), rnorm(10, 1))
+## Define some groups with a factor variable
+f <- gl(3, 10)   
+f
+tapply(x, f, mean)
+```
+
+It is equivalent to:
+
+```{r}
+sapply(split(x, f), mean)
+```
+
+
+
+## `apply()`
+
+- Used to a evaluate a function over the margins of an array. 
+- Often used to apply a function to the rows or columns of a matrix. 
+- Using `apply()` is not really faster than writing a loop, but it works in one line and is highly compact.
+
+
+```{r}
+str(apply)
+```
+
+The arguments to `apply()` are
+
+- `X` is an array
+- `MARGIN` is an integer vector indicating which margins should be “retained”. 
+- `FUN` is a function to be applied
+- `...` is for other arguments to be passed to `FUN`
+
+## `apply()` Example
+Here I create a 20 by 10 matrix of Normal random numbers. I then compute the mean of each column.
+
+```{r}
+x <- matrix(rnorm(200), 20, 10)
+apply(x, 2, mean)  ## Take the mean of each column
+```
+
+I can also compute the sum of each row.
+
+```{r}
+apply(x, 1, sum)   ## Take the mean of each row
+```
+
+- Note that in both calls to `apply()`, the return value was a vector of numbers.
+- The `MARGIN` argument essentially indicates to `apply()` which dimension of the array you want to preserve or retain. So when taking the mean of each column, I specify
+
+```{r,eval=FALSE}
+apply(x, 2, mean)
+```
+
+
+## Col/Row Sums and Means
+
+For the special case of column/row sums and column/row means of matrices, we have some useful shortcuts.
+
+- `rowSums` = `apply(x, 1, sum)`
+- `rowMeans` = `apply(x, 1, mean)`
+- `colSums` = `apply(x, 2, sum)`
+- `colMeans` = `apply(x, 2, mean)`
+
+The shortcut functions are heavily optimized and hence are _much_ faster, but you probably won’t notice unless you’re using a large matrix. Another nice aspect of these functions is that they are a bit more descriptive. It's arguably more clear to write `colMeans(x)` in your code than `apply(x, 2, mean)`.
+
+## Other Ways to Apply
+
+You can do more than take sums and means with the `apply()` function. For example, you can compute quantiles of the rows of a matrix using the `quantile()` function.
+
+```{r}
+x <- matrix(rnorm(200), 20, 10)
+## Get row quantiles
+apply(x, 1, quantile, probs = c(0.25, 0.75))    
+```
+
+Notice that I had to pass the `probs = c(0.25, 0.75)` argument to `quantile()` via the `...` argument to `apply()`.
+
+
+
+
+## `mapply()`
+
+The `mapply()` function is a multivariate apply of sorts which applies a function in parallel over a set of arguments. Recall that `lapply()` and friends only iterate over a single R object. What if you want to iterate over multiple R objects in parallel? This is what `mapply()` is for.
+
+```{r}
+str(mapply)
+```
+
+The arguments to `mapply()` are
+
+- `FUN` is a function to apply
+- `...` contains R objects to apply over
+- `MoreArgs` is a list of other arguments to `FUN`.
+- `SIMPLIFY` indicates whether the result should be simplified
+
+The `mapply()` function has a different argument order from `lapply()` because the function to apply comes first rather than the object to iterate over. The R objects over which we apply the function are given in the `...` argument because we can apply over an arbitrary number of R objects.
+
+## `mapply()` Example
+For example, the following is tedious to type
+
+`list(rep(1, 4), rep(2, 3), rep(3, 2), rep(4, 1))`
+
+With `mapply()`, instead we can do
+
+```{r}
+ mapply(rep, 1:4, 4:1)
+```
+
+This passes the sequence `1:4` to the first argument of `rep()` and the sequence `4:1` to the second argument.
+
+
+Here's another example for simulating randon Normal variables.
+
+```{r}
+noise <- function(n, mean, sd) {
+      rnorm(n, mean, sd)
+}
+## Simulate 5 randon numbers
+noise(5, 1, 2)        
+```
+
+Here we can use `mapply()` to pass the sequence `1:5` separately to the `noise()` function so that we can get 5 sets of random numbers, each with a different length and mean.
+
+
+```{r}
+x <- mapply(noise, 1000, 1:5, 1:5)
+apply(x, 2, mean)
+```
+
+The above call to `mapply()` is the same as
+
+```{r}
+list(noise(1000, 1, 1), noise(1000, 2, 2),
+     noise(1000, 3, 3), noise(1000, 4, 4),
+     noise(1000, 5, 5))
+```
+
+## Vectorizing a Function
+
+- The `mapply()` function can be use to automatically "vectorize" a function. 
+- It can be used to take a function that typically only takes single arguments and create a new function that can take vector arguments. 
+
+Here's an example of a function that computes the sum of squares $\sum_{i=1}^n(x_i-\mu)^2/\sigma^2$.
+
+```{r}
+sumsq <- function(mu, sigma, x) {
+        sum(((x - mu) / sigma)^2)
+}
+```
+
+This function takes a mean `mu`, a standard deviation `sigma`, and some data in a vector `x`.
+
+In many statistical applications, we want to minimize the sum of squares to find the optimal `mu` and `sigma`. Before we do that, we may want to evaluate or plot the function for many different values of `mu` or `sigma`. However, passing a vector of `mu`s or `sigma`s won't work with this function because it's not vectorized.
+
+```{r}
+x <- rnorm(100)       ## Generate some data
+sumsq(1:10, 1:10, x)  ## This is not what we want
+```
+
+Note that the call to `sumsq()` only produced one value instead of 10 values.
+
+However, we can do what we want to do by using `mapply()`.
+
+```{r}
+mapply(sumsq, 1:10, 1:10, MoreArgs = list(x = x))
+```
+
+There's even a function in R called `Vectorize()` that automatically can create a vectorized version of your function. So we could create a `vsumsq()` function that is fully vectorized as follows.
+
+```{r}
+vsumsq <- Vectorize(sumsq, c("mu", "sigma"))
+vsumsq(1:10, 1:10, x)
+```
+
+
+
+
+## Summary
+
+* The loop functions in R are very powerful because they allow you to conduct a series of operations on data using a compact form
+
+* The operation of a loop function involves iterating over an R object (e.g. a list or vector or matrix), applying a function to each element of the object, and the collating the results and returning the collated results.
+
+* Loop functions make heavy use of anonymous functions, which exist for the life of the loop function but are not stored anywhere
+
+* The `split()` function can be used to divide an R object in to subsets determined by another variable which can subsequently be looped over using loop functions.
+
+# Lab Session 2
+
+## 
+In this lab, you will use the temperature data in four cities: Melbourne, Sydney, Brisbane and Cairns. You can download them from https://yanfei.site/docs/sc/data/temp.zip. 
+
+1. Please make a function `load.file()` to read a .csv file and transform the first column (a character representing date and time) using `as.POSIXlt` into R time format.
+2. Then apply `load.file()` to each filename using `lapply()`.
+3. How many rows of data are there for each city?
+4. What is the hottest temperature recorded by city?
+5. Estimate the autocorrelation function for each city.
+
+
+
+## References
+
+Chapters  14, 15 and 18 of the book "R programming for data science".
