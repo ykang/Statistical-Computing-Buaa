@@ -7,6 +7,8 @@ output:
     logo: ../graphics/buaalogo.png
     widescreen: yes
 subtitle: 'Lecture 6: Newton Method'
+
+
 ---
 
 <style>
@@ -42,7 +44,7 @@ Many problems in business require something to be minimized or maximized.
 
 ## Optimisation
 
-- Suppose we want to find an minimum or maximum of a function $f(x)$.
+- Suppose we want to find a minimum or maximum of a function $f(x)$.
 - Sometimes $f(x)$ will be very complicated.
 - Are there computer algorithms that can help?
 - Yes!
@@ -63,7 +65,7 @@ Many problems in business require something to be minimized or maximized.
 
 ## Newton-Raphson Method
 
-The method tries to solve an equation in the form of $g(x) = 0$ through the iterative procedure: $$x_{n+1} = x_n - \frac{f(x_n)}{f^{'}(x_n)}.$$
+The method tries to solve an equation in the form of $f(x) = 0$ through the iterative procedure: $$x_{n+1} = x_n - \frac{f(x_n)}{f^{'}(x_n)}.$$
 
 Please think about **Taylor expansion**.
 
@@ -82,7 +84,7 @@ Please think about **Taylor expansion**.
 
 ## Example
 
-- Now find the root of $f(x) = x^2 - 4$ using Newton method by hand.
+- Now find the root of $f(x) = x^2 - 5$ using Newton method by hand.
 - Tell about its geometric interpretation.
 
 ## Newton-Raphson Method
@@ -100,25 +102,37 @@ Please think about **Taylor expansion**.
 
 ## 
 
-1. Write R code to find the root of $x^2 = 4$.
-2. Now use your Newton-Raphson code to find the root of $g(x) = \sqrt{|x|}$. Try initial value 0.25.
+1. Write R code to find the root of $x^2 = 5$.
+2. Now use your Newton-Raphson code to find the root of $f(x) = \sqrt{|x|}$. Try initial value 0.25.
 3. Now use your Newton-Raphson code to find the root of $x e^{-x^2} = 0.4(e^x + 1)^{-1} + 0.2$. Try initial values 0.5 and 0.6.
 
 What did you learn from mistakes?
 
+## Other Examples
+
+Now try these functions:
+
+1. $f(x) = x^3 - 2x^2 - 11x + 12$, try starting values  2.35287527 and 2.35284172.
+2. $f(x) = 2x^3 + 3x^2 + 5$, try starting values  0.5 and 0.
 
 ## Learn from Mistakes
 
+- Newton-Raphson does not always converge.
 - For some functions, using some certain starting values leads to a series that converges, while other starting values lead to a series that diverges.
 - For other functions different starting values converge to different roots.
 - Be careful when choosing the initial value.
+- Newton-Raphson doesn’t work if the first derivative is zero.
 
+
+
+
+## Conclusion
+
+- Why did we spend so much time on finding roots of an equation?
+- Isn’t this topic meant to be about optimization?
+- Can we change the algorithm slightly so that it works for optimization?
 
 # Optimisation
-
-##
-
-### Can we change the algorithm slightly so that it works for optimization?
 
 ## Finding a Maximum or Minimum
 
@@ -169,7 +183,7 @@ Three stopping rules can be used.
 ## Role of first derivative
 
 
-- If $f''(x)$ is negative the function is locally {\bf concave}, and the search is for a local maximum.
+- If $f''(x)$ is negative the function is locally concave, and the search is for a local maximum.
 - To the left of this maximum $f'(x)>0$.
 - Therefore $-\frac{f'(x)}{f''(x)}>0$.
 - The next step is to the right.
@@ -191,7 +205,7 @@ Three stopping rules can be used.
 
 ## Role of second derivative
 - Together with the sign of the first derivative, the sign of the second derivative controls the direction of the next step.
-- A larger second derivative (in absolute value) implies a more curvature
+- A larger second derivative (in absolute value) implies a larger curvature.
 - In this case smaller steps are need to stop the algorithm from overshooting.
 - The opposite holds for a small second derivative.
 
@@ -211,13 +225,13 @@ Three stopping rules can be used.
 ## Derviatives
 
 - Newton's algorithm has a simple update rule based on first and second derivatives.
-- What do these derivatives look like when the function is $y=f({x})$ where $y$ is a scalar and ${x}$ is a $d\times 1$ vector?
+- What do these derivatives look like when the function is $y=f({x})$ where $y$ is a scalar and $\mathbf{x}$ is a $d\times 1$ vector?
 
 ## First derivative
 
 Simply take the partial derivatives and put them in a vector
 $$
-    \frac{\partial y}{\partial{x}}=
+    \frac{\partial y}{\partial{\mathbf{x}}}=
     \left(
       \begin{array}{c}
         \frac{\partial y}{\partial x_1}\\
@@ -232,7 +246,7 @@ This is called the gradient vector.
 
 The function $y=x_1^2-x_1x_2+x_2^2+e^{x_2}$ has gradient vector
 
-$$\frac{\partial y}{\partial{x}}=\left(\begin{array}{c}
+$$\frac{\partial y}{\partial{\mathbf{x}}}=\left(\begin{array}{c}
                                                2x_1-x_2\\
                                                -x_1+2x_2+e^{x_2}
                                              \end{array}
@@ -241,7 +255,7 @@ $$\frac{\partial y}{\partial{x}}=\left(\begin{array}{c}
 ## Second derivative
 Simply take the second order partial derivatives.  This will give a matrix
 $$
-                                           \frac{\partial y}{\partial{x}\partial{x}'}=
+                                           \frac{\partial y}{\partial{\mathbf{x}}\partial{\mathbf{x}}'}=
                                            \left(
                                              \begin{array}{cccc}
                                                \frac{\partial^2 y}{\partial x_1^2}&\frac{\partial^2 y}{\partial x_1\partial x_2}&\cdots&\frac{\partial^2 y}{\partial x_1\partial x_d}\\
@@ -255,107 +269,89 @@ This is called the Hessian matrix.
 
 ## An example
 The function $y=x_1^2-x_1x_2+x_2^2+e^{x_2}$ has Hessian matrix
-$$\frac{\partial y}{\partial{ x}\partial{ x}'}=\left(\begin{array}{cc}
+$$\frac{\partial y}{\partial{\mathbf{x}}\partial{ \mathbf{x}}'}=\left(\begin{array}{cc}
                                                                                                       2 & -1\\
                                                                                                       -1 & 2 + e^{x_2}
                                                                                                     \end{array}
                                                                                                   \right)
                                            $$
                                            
-## Preliminaries for matrix derivatives
+<!-- ## Preliminaries for matrix derivatives -->
 
 
-The derivative of a vector $\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_m \\ \end{bmatrix}$ , by a scalar $x$ is written (in numerator layout notation) as
-  $$\begin{align*}
-    \frac{\partial \mathbf{y}}{\partial x} = \begin{bmatrix} \frac{\partial y_1}{\partial x}\\ \frac{\partial y_2}{\partial x}\\ \vdots\\ \frac{\partial y_m}{\partial x}\\ \end{bmatrix}.
-  \end{align*}$$
-  
-In vector calculus the derivative of a vector $y$ with respect to a scalar $x$ is known as the tangent vector of the vector $y$, $\frac{\partial \mathbf{y}}{\partial x}$.
+<!-- The derivative of a vector $\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_m \\ \end{bmatrix}$ , by a scalar $x$ is written (in numerator layout notation) as -->
+<!--   $$\begin{align*} -->
+<!--     \frac{\partial \mathbf{y}}{\partial x} = \begin{bmatrix} \frac{\partial y_1}{\partial x}\\ \frac{\partial y_2}{\partial x}\\ \vdots\\ \frac{\partial y_m}{\partial x}\\ \end{bmatrix}. -->
+<!--   \end{align*}$$ -->
 
-## Preliminaries for matrix derivatives
-The derivative of a scalar $y$ by a vector $\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ , is written (in numerator layout notation) as
-$$
-  \begin{align*}
-    \frac{\partial y}{\partial \mathbf{x}} = \left[ \frac{\partial y}{\partial x_1} \ \ \frac{\partial y}{\partial x_2} \ \ \cdots \ \ \frac{\partial y}{\partial x_n} \right].
-  \end{align*}
-$$
+<!-- In vector calculus the derivative of a vector $y$ with respect to a scalar $x$ is known as the tangent vector of the vector $y$, $\frac{\partial \mathbf{y}}{\partial x}$. -->
 
-## Preliminaries for matrix derivatives
+<!-- ## Preliminaries for matrix derivatives -->
+<!-- The derivative of a scalar $y$ by a vector $\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ , is written (in numerator layout notation) as -->
+<!-- $$ -->
+<!--   \begin{align*} -->
+<!--     \frac{\partial y}{\partial \mathbf{x}} = \left[ \frac{\partial y}{\partial x_1} \ \ \frac{\partial y}{\partial x_2} \ \ \cdots \ \ \frac{\partial y}{\partial x_n} \right]. -->
+<!--   \end{align*} -->
+<!-- $$ -->
 
-The second order derivatives of a scalar $y$ by a vector $\mathbf{x}
-  = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ is written (in numerator layout notation) as
-$$
-  \begin{align*}
-    \frac{\partial^2 y}{\partial \mathbf{x}\partial \mathbf{x}'}&=\frac{\partial
-    }{\partial \mathbf{x}'}\left[\frac{\partial y}{\partial \mathbf{x}}\right]=\frac{\partial}{\partial \mathbf{x}'}\left[ \frac{\partial y}{\partial x_1} \ \ \frac{\partial y}{\partial x_2} \ \ \cdots \ \ \frac{\partial y}{\partial x_n} \right] \\&= \begin{bmatrix} \frac{\partial^2 y}{\partial x_1^2} & \frac{\partial^2 y}{\partial x_1\partial x_2} & \cdots & \frac{\partial^2 y}{\partial x_1\partial x_n}\\ \frac{\partial^2 y}{\partial x_2\partial x_1} & \frac{\partial^2 y}{\partial x_2^2} & \cdots & \frac{\partial^2 y}{\partial x_2\partial x_n}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial^2 y}{\partial x_m\partial x_1} & \frac{\partial^2 y}{\partial x_m\partial x_2} & \cdots & \frac{\partial^2 y}{\partial x_m\partial x_m}\\ \end{bmatrix}.
-  \end{align*}
-$$
+<!-- ## Preliminaries for matrix derivatives -->
 
-## Preliminaries for matrix derivatives
+<!-- The second order derivatives of a scalar $y$ by a vector $\mathbf{x} -->
+<!--   = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ is written (in numerator layout notation) as -->
+<!-- $$ -->
+<!--   \begin{align*} -->
+<!--     \frac{\partial^2 y}{\partial \mathbf{x}\partial \mathbf{x}'}&=\frac{\partial -->
+<!--     }{\partial \mathbf{x}'}\left[\frac{\partial y}{\partial \mathbf{x}}\right]=\frac{\partial}{\partial \mathbf{x}'}\left[ \frac{\partial y}{\partial x_1} \ \ \frac{\partial y}{\partial x_2} \ \ \cdots \ \ \frac{\partial y}{\partial x_n} \right] \\&= \begin{bmatrix} \frac{\partial^2 y}{\partial x_1^2} & \frac{\partial^2 y}{\partial x_1\partial x_2} & \cdots & \frac{\partial^2 y}{\partial x_1\partial x_n}\\ \frac{\partial^2 y}{\partial x_2\partial x_1} & \frac{\partial^2 y}{\partial x_2^2} & \cdots & \frac{\partial^2 y}{\partial x_2\partial x_n}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial^2 y}{\partial x_m\partial x_1} & \frac{\partial^2 y}{\partial x_m\partial x_2} & \cdots & \frac{\partial^2 y}{\partial x_m\partial x_m}\\ \end{bmatrix}. -->
+<!--   \end{align*} -->
+<!-- $$ -->
 
-The derivative of a vector function (a vector whose components are functions) $\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_m \\ \end{bmatrix}$ , with respect to an input vector, $\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ , is written (in numerator layout notation) as
-$$
-  \begin{align*}
-    \frac{\partial \mathbf{y}}{\partial \mathbf{x}} = \begin{bmatrix} \frac{\partial y_1}{\partial x_1} & \frac{\partial y_1}{\partial x_2} & \cdots & \frac{\partial y_1}{\partial x_n}\\ \frac{\partial y_2}{\partial x_1} & \frac{\partial y_2}{\partial x_2} & \cdots & \frac{\partial y_2}{\partial x_n}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y_m}{\partial x_1} & \frac{\partial y_m}{\partial x_2} & \cdots & \frac{\partial y_m}{\partial x_n}\\ \end{bmatrix}.
-  \end{align*}
-$$
+<!-- ## Preliminaries for matrix derivatives -->
 
-## Preliminaries for matrix derivatives
+<!-- The derivative of a vector function (a vector whose components are functions) $\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_m \\ \end{bmatrix}$ , with respect to an input vector, $\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}$ , is written (in numerator layout notation) as -->
+<!-- $$ -->
+<!--   \begin{align*} -->
+<!--     \frac{\partial \mathbf{y}}{\partial \mathbf{x}} = \begin{bmatrix} \frac{\partial y_1}{\partial x_1} & \frac{\partial y_1}{\partial x_2} & \cdots & \frac{\partial y_1}{\partial x_n}\\ \frac{\partial y_2}{\partial x_1} & \frac{\partial y_2}{\partial x_2} & \cdots & \frac{\partial y_2}{\partial x_n}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y_m}{\partial x_1} & \frac{\partial y_m}{\partial x_2} & \cdots & \frac{\partial y_m}{\partial x_n}\\ \end{bmatrix}. -->
+<!--   \end{align*} -->
+<!-- $$ -->
 
- The derivative of a matrix function $Y$ by a scalar $x$ is known as the tangent
-  matrix and is given (in numerator layout notation) by
-  $$
-  \begin{align*}
-    \frac{\partial \mathbf{Y}}{\partial x} = \begin{bmatrix} \frac{\partial y_{11}}{\partial x} & \frac{\partial y_{12}}{\partial x} & \cdots & \frac{\partial y_{1n}}{\partial x}\\ \frac{\partial y_{21}}{\partial x} & \frac{\partial y_{22}}{\partial x} & \cdots & \frac{\partial y_{2n}}{\partial x}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y_{m1}}{\partial x} & \frac{\partial y_{m2}}{\partial x} & \cdots & \frac{\partial y_{mn}}{\partial x}\\ \end{bmatrix}.
-  \end{align*}
-$$
+<!-- ## Preliminaries for matrix derivatives -->
 
-## Preliminaries for matrix derivatives
+<!--  The derivative of a matrix function $\mathbf{Y}$ by a scalar $x$ is known as the tangent -->
+<!--   matrix and is given (in numerator layout notation) by -->
+<!--   $$ -->
+<!--   \begin{align*} -->
+<!--     \frac{\partial \mathbf{Y}}{\partial x} = \begin{bmatrix} \frac{\partial y_{11}}{\partial x} & \frac{\partial y_{12}}{\partial x} & \cdots & \frac{\partial y_{1n}}{\partial x}\\ \frac{\partial y_{21}}{\partial x} & \frac{\partial y_{22}}{\partial x} & \cdots & \frac{\partial y_{2n}}{\partial x}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y_{m1}}{\partial x} & \frac{\partial y_{m2}}{\partial x} & \cdots & \frac{\partial y_{mn}}{\partial x}\\ \end{bmatrix}. -->
+<!--   \end{align*} -->
+<!-- $$ -->
 
- The derivative of a scalar $y$ function of a matrix $X$ of independent variables, with respect to the matrix $X$, is given (in numerator layout notation) by
-$$
-  \begin{align*}
-    \frac{\partial y}{\partial \mathbf{X}} = \begin{bmatrix} \frac{\partial y}{\partial x_{11}} & \frac{\partial y}{\partial x_{21}} & \cdots & \frac{\partial y}{\partial x_{p1}}\\ \frac{\partial y}{\partial x_{12}} & \frac{\partial y}{\partial x_{22}} & \cdots & \frac{\partial y}{\partial x_{p2}}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y}{\partial x_{1q}} & \frac{\partial y}{\partial x_{2q}} & \cdots & \frac{\partial y}{\partial x_{pq}}\\ \end{bmatrix}.
-  \end{align*}
-$$
+<!-- ## Preliminaries for matrix derivatives -->
+
+<!--  The derivative of a scalar $y$ function of a matrix $\mathbf{X}$ of independent variables, with respect to the matrix $\mathbf{X}$, is given (in numerator layout notation) by -->
+<!-- $$ -->
+<!--   \begin{align*} -->
+<!--     \frac{\partial y}{\partial \mathbf{X}} = \begin{bmatrix} \frac{\partial y}{\partial x_{11}} & \frac{\partial y}{\partial x_{21}} & \cdots & \frac{\partial y}{\partial x_{p1}}\\ \frac{\partial y}{\partial x_{12}} & \frac{\partial y}{\partial x_{22}} & \cdots & \frac{\partial y}{\partial x_{p2}}\\ \vdots & \vdots & \ddots & \vdots\\ \frac{\partial y}{\partial x_{1q}} & \frac{\partial y}{\partial x_{2q}} & \cdots & \frac{\partial y}{\partial x_{pq}}\\ \end{bmatrix}. -->
+<!--   \end{align*} -->
+<!-- $$ -->
 
 ## Newton’s algorithm for multidimensional optimization
 
 We can now generalise the update step in Newton's method:
-                                                                      $$                      x_{n+1}=x_n-\left(\frac{\partial^2 f({ x})}{\partial {x}\partial{ x}'}\right)^{-1}
-                                                                                                  \frac{\partial f({ x})}{\partial { x}}$$
+                                                                      $$ \mathbf{x_{n+1}}=\mathbf{x_n}-\left(\frac{\partial^2 f({ \mathbf{x}})}{\partial {\mathbf{x}}\partial{\mathbf{x}}'}\right)^{-1}
+                                                                                                  \frac{\partial f({\mathbf{x}})}{\partial {\mathbf{x}}}$$
 
 Now write code to minimise $y=x_1^2-x_1x_2+x_2^2+e^{x_2}$.
 
-## The linear regression model, a revisit
 
-- Consider the linear regression model with multiple covariates,
-$$
-    y_i = \beta_0 + \beta_1x_1+...+\beta_p x_p + \epsilon_i,
-$$
-where $\epsilon_i \sim N(0, \sigma^2)$
-- What is the gradient and Hessian matrix for the log likelihood ($\mathcal{L}$)
-  with respect to the parameter vector $\mathbf{\beta}=(\beta_0,...,\beta_p)$?
-
-$$
-    \frac{\partial log \mathcal{L}}{\partial \mathbf{\beta}} = ?
-$$
-
-$$
-    \frac{\partial^2 log \mathcal{L}}{\partial \mathbf{\beta} \partial \mathbf{\beta}'}
-    = ?
-$$
 
 ## Maximum likelihood Estimate for linear models
 
-- Assume you want to make a regression model
+Assume you want to make a regression model
 $$
-      y_i = \beta_0 + \beta_1 x_i + \epsilon_i,
+     y_i = \beta_0 + \beta_1x_{i} + \epsilon_i,~\text{where}~\epsilon_i \sim N(0, \sigma^2).
 $$
-where $\epsilon_i \sim N(0, \sigma^2)$
-- What is the (log) likelihood function?
-- What are the unknown parameters?
-- How do we estimate the parameters? Let's consider three situations
+
+
+- How do we estimate the parameters? Let's consider three situations:
     - When $\beta_0=1$ and $\sigma^2=1$ known.
     - When $\sigma^2=1$ known.
     - Neither $\beta$ nor $\sigma$ is known.
@@ -366,35 +362,46 @@ where $\epsilon_i \sim N(0, \sigma^2)$
 
 ## Optimizing the likelihood function by using `optim()`
 
-```r
+```{r}
 ## Generate some data
 beta0 <- 1
 beta1 <- 3
 sigma <- 1
 n <- 1000
 x <- rnorm(n, 3, 1)
-y <- beta0 + x*beta1 + rnorm(n, mean = 0, sd = sigma)
-plot(x, y, col = "blue", pch = 20)
+y <- beta0 + x * beta1 + rnorm(n, mean = 0, sd = sigma)
+# plot(x, y, col = "blue", pch = 20)
+
+## Make the log normal likelihood function
+logNormLikelihood <- function(pars, x, y){
+  beta0 <- pars[1]
+  beta1 <- pars[2]
+  sigma <- pars[3]
+  mu <- beta0 + beta1 * x
+  return(sum(dnorm(y, mu, sigma, log = TRUE)))
+}
 
 ## The optimization
-optimOut <- optim(c(0, -1, 0.1), logNormLikelihood,
-                  control = list(fnscale = -1),
-                  x = x, y = y)
+optimOut <- optim(c(0, -1, 0.1),
+                  logNormLikelihood,
+                  x = x, y = y,
+                  control = list(fnscale = -1))
 beta0Hat <- optimOut$par[1]
 beta1Hat <- optimOut$par[2]
 sigmaHat <- optimOut$par[3]
-yHat <- beta0Hat + beta1Hat*x
+yHat <- beta0Hat + beta1Hat * x
 
+## Plot
 plot(x, y, pch = 20, col = "blue")
 points(sort(x), yHat[order(x)], type = "l", col = "red", lwd = 2)
 ```
 
 ## Comparison with OLS
 
-```r
+```{r}
 myLM <- lm(y~x)
 myLMCoef <- myLM$coefficients
-yHatOLS <- myLMCoef[1] + myLMCoef[2]*x
+yHatOLS <- myLMCoef[1] + myLMCoef[2] * x
 plot(x, y, pch = 20, col = "blue")
 points(sort(x), yHat[order(x)], type = "l", col = "red", lwd = 10)
 points(sort(x), yHatOLS[order(x)], type = "l",
@@ -406,10 +413,10 @@ points(sort(x), yHatOLS[order(x)], type = "l",
 
 Use Newton’s method to find the maximum likelihood estimate for the coefficients in a logistic regression. The steps are:
 
-1. Write down likelihood function
-2. Find the gradient and Hessian matrix
-3. Code these up in R
-4. Simulate some data from a logistic regression model. ‚ Test your code.
+1. Write down likelihood function.
+2. Find the gradient and Hessian matrix.
+3. Code these up in R.
+4. Simulate some data from a logistic regression model and test your code.
 
 ## References
 
