@@ -108,6 +108,82 @@ Please think about **Taylor expansion**.
 
 What did you learn from mistakes?
 
+## You can use `D()`
+
+```r
+newton.raphson <- function(f, init.value, df = NULL, tol = 1e-5, maxiter = 1000) {
+  if (is.null(df)) {
+    df <- D(f, 'x')
+  }
+  niter <- 0
+  diff <- tol + 1
+  x <- init.value
+  while (diff >= tol && niter <= maxiter) {
+    niter <- niter + 1
+    fx <- eval(f)
+    dfx <- eval(df)
+    if (dfx == 0) {
+      warning("Slope is zero: no further improvement possible.")
+      break
+    }
+    diff <- -fx/dfx
+    x <- x + diff
+    diff <- abs(diff)
+  }
+  if (niter > maxiter) {
+    warning("Maximum number of iterations 'maxiter' was reached.")
+  }
+  return(list(root = x, f.root = fx, niter = niter, estim.prec = diff))
+}
+```
+
+## You can also use `deriv()`
+
+```r
+newton.raphson <- function(ftn, x0, tol = 1e-9, max.iter = 100) {
+  # Newton_Raphson algorithm for solving ftn(x)[1] == 0
+  # we assume that ftn is a function of a single variable that returns
+  # the function value and the first derivative as a vector of length 2
+  #
+  # x0 is the initial guess at the root
+  # the algorithm terminates when the function value is within distance
+  # tol of 0, or the number of iterations exceeds max.iter
+  
+  # initialise
+  x <- x0
+  fx <- ftn(x)
+  iter <-  0
+  
+  # continue iterating until stopping conditions are met
+  while ((abs(fx[1]) > tol) && (iter < max.iter)) {
+    x <- x - fx[1]/fx[2]
+    fx <- ftn(x)
+    iter <-  iter + 1
+    cat("At iteration", iter, "value of x is:", x, "\n")
+  }
+  
+  # output depends on success of algorithm
+  if (abs(fx[1]) > tol) {
+    cat("Algorithm failed to converge\n")
+    return(NULL)
+  } else {
+    cat("Algorithm converged\n")
+    return(x)
+  }
+}
+
+f <- expression(x^2 - 5)
+df <- deriv(f, 'x', func = TRUE)
+ftn <- function(x){
+  dfx <- df(x)
+  f <- dfx[1]
+  gradf <- attr(dfx, 'gradient')[1,]
+  return(c(f, gradf))
+}
+
+newton.raphson(ftn, 1)
+```
+
 ## Other Examples
 
 Now try these functions:
@@ -347,20 +423,17 @@ Now write code to minimise $y=x_1^2-x_1x_2+x_2^2+e^{x_2}$.
 
 Assume you want to make a regression model
 $$
-     y_i = \beta_0 + \beta_1x_{i} + \epsilon_i,~\text{where}~\epsilon_i \sim N(0, \sigma^2).
+     y_i = \beta_0 + \beta_1x_{i} + \epsilon_i,~\text{where}~\epsilon_i \sim N(0, 1).
 $$
 
 
-- How do we estimate the parameters? Let's consider three situations:
-    - When $\beta_0=1$ and $\sigma^2=1$ known.
-    - When $\sigma^2=1$ known.
-    - Neither $\beta$ nor $\sigma$ is known.
-- Write down the likelihood function with respect to the unknown parameters.
-- Write down the gradient for the likelihood function.
-- Write down the Hessian for the likelihood function.
-- Use Newton's method to obtain the best parameter estimate.
+- How do we estimate the parameters? 
+- Write down the log likelihood function with respect to the unknown parameters.
+- Write down the gradient for the log likelihood function.
+- Write down the Hessian for the log likelihood function.
+- Use your newton function to obtain the best parameter estimate.
 
-## Optimizing the likelihood function by using `optim()`
+## Optimizing Using Newton's Method
 
 ```{r}
 ## Generate some data
@@ -373,22 +446,23 @@ y <- beta0 + x * beta1 + rnorm(n, mean = 0, sd = sigma)
 # plot(x, y, col = "blue", pch = 20)
 
 ## Make the log normal likelihood function
-logNormLikelihood <- function(pars, x, y){
-  beta0 <- pars[1]
-  beta1 <- pars[2]
-  sigma <- pars[3]
-  mu <- beta0 + beta1 * x
-  return(sum(dnorm(y, mu, sigma, log = TRUE)))
+func = function(beta){
+  sum((y-beta[1]-beta[2]*x)^2)
+}
+
+grad = function(beta){
+  matrix(c(sum(-2*(y-beta[1]-beta[2]*x)),sum(-2*x*(y-beta[1]-beta[2]*x))),2,1)
+}
+
+hess = function(beta){
+  matrix(c(2*length(x),2*sum(x),2*sum(x),2*sum(x^2)),2,2)
 }
 
 ## The optimization
-optimOut <- optim(c(0, -1, 0.1),
-                  logNormLikelihood,
-                  x = x, y = y,
-                  control = list(fnscale = -1))
-beta0Hat <- optimOut$par[1]
-beta1Hat <- optimOut$par[2]
-sigmaHat <- optimOut$par[3]
+source('./RCode/newton.R')
+optimOut <- newton(function(beta){list(func(beta), grad(beta), hess(beta))}, c(1.1, 1.3))
+beta0Hat <- optimOut[1]
+beta1Hat <- optimOut[2]
 yHat <- beta0Hat + beta1Hat * x
 
 ## Plot
@@ -408,7 +482,7 @@ points(sort(x), yHatOLS[order(x)], type = "l",
        col = "blue", lty="dashed", lwd = 2, pch = 20)
 ```
  
-# Lab Session 6
+# Lab Session 7
 ##
 
 Use Newton’s method to find the maximum likelihood estimate for the coefficients in a logistic regression. The steps are:

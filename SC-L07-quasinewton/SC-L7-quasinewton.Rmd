@@ -1,0 +1,99 @@
+---
+title: "Statistical Computing"
+author: "<br><br>Yanfei Kang <br> yanfeikang@buaa.edu.cn"
+date: "School of Economics and Management <br> Beihang University <br> http://yanfei.site"
+output:
+  ioslides_presentation:
+    logo: ../graphics/buaalogo.png
+    widescreen: yes
+subtitle: 'Lecture 7: Quasi-Newton Methods'
+
+
+---
+
+<style>
+    slides > slide {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff=60),
+                      tidy = TRUE, 
+                      echo = TRUE)
+options(width = 60)
+```
+
+## Quasi-Newton Methods
+
+- One of the most difficult parts of the Newton method is working out the derivatives especially the Hessian.
+- However methods can be used to approximate the Hessian and also the gradient.
+- These are known as Quasi-Newton Methods.
+- In general they will converge slower than pure Newton methods.
+
+## The BFGS Algorithm
+
+Introduced over several papers by Broyden, Fletcher, Goldfarb and Shanno. It is the most popular Quasi-Newton algorithm.
+
+- Recall Newton iteration: $$x_{n+1} = x_n - f^{''}(x_n)^{-1}f^{'}(x_n).$$
+- Is there some matrix to replace $f^{''}(x_n)$ or $f^{''}(x_n)^{-1}$?
+- Can we use a revised iteration: $x_{n+1} = x_n - B_n^{-1}f^{'}(x_n),$ where $B_n$ is simpler to compute but still allows the algorithm to converge quickly?
+
+## The BFGS Algorithm
+
+- The idea with Quasi-Newton is to find a solution $B_n$ to the problem $$f^{'}(x_n) - f^{'}(x_{n-1}) = B_n(x_n - x_{n-1}).$$
+- Let $y_n = f^{'}(x_n) - f^{'}(x_{n-1})$ and $s_n = x_n - x_{n-1}$, one updating procedures for $B_n$:
+$$B_n = B_{n-1} + \frac{y_ny_n^{'}}{y_n^{'}s_n} - \frac{B_{n-1}s_n s_n^{'}B_{n-1}^{'}}{s_n^{'}B_{n-1}s_n}.$$
+
+## The L-BFGS-B Algorithm
+
+- The R function `optim()` also has a variation called L-BFGS-B.
+- The L-BFGS-B uses less computer memory than BFGS and allows for box constraints.
+
+## Box Constrains
+
+- Box constraints have the form $$l_i \leq x_i \leq u_i,~ \forall i.$$
+- In statistics this can be very useful. Often parameters are constrained.
+    - Variance must be greater than 0.
+    - For a stationary AR(1), coefficients must be between -1 and 1.
+    - Weights in a portfolio must be between 0 and 1.
+
+## `optim()`  in R
+
+- `optim()`  requires at least two inputs.
+    - Initial values
+    - The function that needs to be optimized
+- By default it minimises a function.    
+- A function that computes the gradient vector can also be provided.   
+- The optimization method can be set (choices include BFGS, L-BFGS-B and Nelder-Mead)  .
+- Lower and upper bounds can be set through the arguments lower and upper if the L-BFGS-B method is used.
+
+## `optim()`  in R
+- Further arguments can be passed in an argument called `control`.
+- Some things that can be included in this list are
+    - Maximum number of iterations (`maxit`)
+    - Information about the algorithm (`trace`)
+    - How often to display information about the algorithm (`REPORT`)
+
+
+## `optim()`  in R   
+- The result of optim can be saved in an object that is a list containing 
+    - The value of the function at the turning point (`value`)
+    - The optimal parameters (`par`)
+    - Useful information about whether the algorithm has converged (`convergence`)
+- For all algorithms convergence = 0 if the algorithm has converged (slightly confusing).
+
+
+
+# Lab Session 8
+## 
+
+Use `optim()` to carry out maximum likelihood for the Logistic regression model.
+
+
+
+## References
+
+Chapter 3.3 of the book ["Advanced Statistical Computing"](https://bookdown.org/rdpeng/advstatcomp/).
