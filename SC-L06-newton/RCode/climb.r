@@ -4,7 +4,7 @@ xgrid<-seq(-3.5,3.5,0.01)
 ygrid<--xgrid^4
 
 pdf('climb1.pdf')
-plot(xgrid,ygrid,xlim=c(-3,3),ylim=c(-100,4),lwd=4,"l",xlab='x',ylab='f(x)',main='Step Size x=2')
+plot(xgrid,ygrid,xlim=c(-3,3),ylim=c(-100,4),lwd=4,"l",xlab='x',ylab='f(x)',main='Step Size x=-2')
 lines(c(-1.5,-3),c(0,-48),col='magenta',lty=2,lwd=3)
 text(-2,-16,'Step Size = 2/3',col='magenta',pos=4)
 dev.off()

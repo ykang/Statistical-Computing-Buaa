@@ -165,7 +165,7 @@ A common choice is $\gamma=2$
 ![](../SC-L06-newton/RCode/nmexpansion3.pdf)
 </center>
 
-## Keep Expansion Point
+## Keep Relection Point
 <center>                                                              
 ![](../SC-L06-newton/RCode/nmexpansion4.pdf)
 </center>
@@ -229,12 +229,18 @@ A popular choice is $\sigma=0.5$.
 - Find reflected point
 - Three cases:
     1. Case 1 ($f({\mathbf x_1})\leq f({\mathbf x_r})<f({\mathbf x_n})$): Keep ${\mathbf x_r}$
-    2. Case 2 ($f({\mathbf x_r}) < f({\mathbf x_1})$): Find ${\mathbf x_e}$.
-        - If $f({\mathbf x_e})<f({\mathbf x_r})$ then keep $f({\mathbf x_e})$
-        - Otherwise keep $f({\mathbf x_r})$
-    3. Case 3 ($f({\mathbf x_r})\geq f({\mathbf x_n})$): Find $f({\mathbf x_c})$
-        - If $f({\mathbf x_c})<f({\mathbf x_{n+1}})$ then keep $f({\mathbf x_{c}})$
-        - Otherwise Shrink
+    2. Case 2 ($f({\mathbf x_r}) < f({\mathbf x_1})$): Find $\mathbf x_e$.
+        - If $f({\mathbf x_e})<f({\mathbf x_r})$ then keep $\mathbf x_e$
+        - Otherwise keep $\mathbf x_r$
+    3. Case 3 ($f({\mathbf x_r})\geq f({\mathbf x_n})$): Find $\mathbf x_c$
+        - If $f({\mathbf x_c})<f({\mathbf x_{n+1}})$ then keep $\mathbf x_c$
+        - Otherwise shrink
+
+## 
+
+<center>                                                              
+![](../SC-L06-newton/Rcode/NM/out/movie2.gif)
+</center>
 
 # Coding Nelder Mead
 
@@ -295,12 +301,6 @@ Some of you may have learnt the formula for the area of a triangle as:$$\frac{1}
                                                                                                     \right)\right|$$
 The two approaches are equivalent.
 
-## Questions
-
-- In my code, where should I start the loop?
-- Should it be a `for` loop or a `while` loop?
-- What should the loop look like?
-       
 
 ## Nelder Mead in `optim()`
 
@@ -309,24 +309,7 @@ The two approaches are equivalent.
 - Including the argument `control=list(trace, REPORT=1)` will print out details about each step of the algorithm.
 - Slight different terminology is used for example 'expansion' is called 'extension'
 
-## Box constraints in Nelder Mead
-
-- It is not possible to impose box constraints in Nelder Mead.
-- However it is possible to trick R.  How?
-- Suppose the problem is a minimization.  We can use an {\em if} statement to force the function to be extremely large outside the box.
-- This is not an option in BFGS since this induces a discontinuity in the function.
-
-## Some test functions
-
-Use both Nelder Mead and L-BFGS-B to minimize the following 
-
-- Booth's Function: $$f({\mathbf x})=(x_1+2x_2-7)^2+(2x_1+x_2-5)^2, \quad-10\leq x_1,x_2\leq 10$$
-- Bukin Function N.6: $$f({\mathbf x})=100\sqrt{\left|x_2-\frac{x_1^2}{100}\right|}+\frac{|x_1+10|}{100}
-                                                                                                    \quad\begin{array}{c}
-                                                                                                           -15\leq x_1\leq 5\\
-                                                                                                           -3\leq x_2\leq 3
-                                                                                                         \end{array}$$
-                                                                                                         
+          
 ## Summary                                                          
 - This is the end of the optimization topic.
 - You should now be familiar with
@@ -336,6 +319,7 @@ Use both Nelder Mead and L-BFGS-B to minimize the following
 - Hopefully you also improved your coding skills!
 
 ## Summary
+
 Some important lessons:
 
 - If you can evaluate derivatives and Hessians then do so when implementing Newton and Quasi-Newton methods.
