@@ -6,7 +6,7 @@ output:
   ioslides_presentation:
     logo: ../graphics/buaalogo.png
     widescreen: yes
-subtitle: 'Lecture 9: Eigendecomposition'
+subtitle: 'Lecture 9: Eigenanalysis'
 
 
 ---
@@ -38,15 +38,8 @@ options(width = 60)
 # We need to know numerical techniques!
 
 
-## Eigendecomposition
 
-### Objectives
 
-- Eigenanalysis
-- Diagonalisation and applications
-- Applications to Principal Component Analysis
-- Generalised Eigenvectors and Jordan Canonical Form 
-- Orthogonalisation and Schur Decomposition
 
 ## Eigenanalysis
 
@@ -54,8 +47,9 @@ options(width = 60)
 - However, a matrix may act on certain vectors by changing only their magnitude, and leaving their direction unchanged (or reversing it).
     - these vectors are the eigenvectors of the matrix
     - the scaling factor is the eigenvalue.
-<center>                                                              
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Eigenvalue_equation.svg/1280px-Eigenvalue_equation.svg.png)
+
+<center>    
+<img src="./figs/eigen.png" height="200px" />
 </center>
 
 ## Example
@@ -89,9 +83,10 @@ $$\mathbf{A} = \left(\begin{array}{cc}
     - Only real eigenvalues
     - $n$ distinct linearly independent eigenvectors
     - pairwise orthogonal
-    - $\mathbf{A = QDQ^T}$
-    
-- Let us revist together the properties of eigenvalues and eigenvectors. 
+    - $\mathbf{A = Q\Lambda Q^T}$
+- When $A$ is diagonalisable?
+- If a diagonalisation doesn't exist, there is always a triangularisation via Schur Decomposition: $\mathbf{A = QSQ^T}$.    
+- Let us revisit together the properties of eigenvalues and eigenvectors. 
 
 ## What does eigenanalysis help to do?
 
@@ -109,7 +104,7 @@ $$\mathbf{A} = \left(\begin{array}{cc}
    -1 
    \end{array}\right)$. 
     - what if we now want to calculate $\mathbf{A^{20}x}$?
-    - what if we now want to calculate $\mathbf{A^{-1}x$?
+    - what if we now want to calculate $\mathbf{A^{-1}x}$?
     
 - Computationally, we would rather work with scalars than matrices and this is what eigenanalysis helps us do.
 - But what if we are not lucky enough to be asked to multiply a matrix by one of its eigenvectors?
@@ -122,8 +117,8 @@ $$\mathbf{A} = \left(\begin{array}{cc}
 
 ## Application of Eigenanalysis: Google
 
-<center>                                                              
-![](google.png)
+<center>            
+<img src="./figs/google.png" height="500px" />
 </center>
 
 ## How to know page rank?
@@ -141,17 +136,20 @@ $A_{i,j}$ is 1 if there is a hyperlink from page $i$ to page $j$ and 0 otherwise
 
 ## A small example
 
+- Consider the small set of five webpages.
 <center>                                                              
 ![](./figs/googleeg.png)
 </center>
 
-- For the small set of 5 webpages shown below, the connectivity matrix is $$A = \left(\begin{array}{ccccc}
+- The connectivity matrix is $$A = \left(\begin{array}{ccccc}
    0 & 1 & 0 & 1 & 1\\
    0 & 0 & 1 & 1 & 1\\
    1 & 0 & 0 & 1 & 0\\
    0 & 0 & 0 & 0 & 1\\
    0 & 0 & 1 & 0 & 0
    \end{array}\right)$$
+
+## A small example
 - The ranking of page $i$ is proportional to the sum of the rankings of all pages that link to $i$: $r_4 = \alpha(r_1 + r_2 + r_3)$.
 - So this is a system of $n =5$ linear equations: $$r = \alpha A^T r, ~\text{or}~A^T r = (1/\alpha) r.$$
 - The ranking vector is treated like a probability of relevance, so we
@@ -160,6 +158,8 @@ need to then rescale so that $\Sigma_{i=1}^n = 1.$
 
 ## What you need to realise for now
 
-Finding the eigenvalues and eigenvectors of a massive matrix is computationally challenging though (don’t try to solve the characteristic polynomial!), and you will learn numerical techniques later.
+- Finding the eigenvalues and eigenvectors of a massive matrix is computationally challenging though (don’t try to solve the characteristic polynomial!)
+- and you will learn numerical techniques later.
+
 
 

@@ -79,14 +79,14 @@ English.
     + Newton's method
     + Quasi-Newton methods
     + Derivative free methods
-- Simulation
-    + Independent Monte Carlo
-    + Markov Chain Monte Carlo
 - Computational Linear Algebra 
-    + Eigendecomposition
+    + Eigenanalysis
     + Singular value decomposition
     + Numerical algorithms for eigenanalysis
     + Applications: Classification of handwritten digits and face images
+- ~~Simulation~~ 
+    + Independent Monte Carlo
+    + Markov Chain Monte Carlo
 
 
 

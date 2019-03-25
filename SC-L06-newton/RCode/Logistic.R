@@ -1,14 +1,14 @@
 rm(list=ls())
 n<-100 #Set sample size
-p<-3 # Set number of regressors
+p<-2 # Set number of regressors
 
 #### Steps to randomly generate data from a Logistic Regression model 
 
 #Randomly generate X from a U(0,1) distrbution, and put in an nxp matrix
-X<-matrix(runif(n*p),n,p) 
+X<-cbind(rep(1, n), runif(n))
 
 #Set true values of the coefficients
-betatrue=as.vector(c(-1,0,1)) 
+betatrue=as.vector(c(1,2)) 
 
 #Compute vector Xb
 Xbetatrue<-X%*%betatrue 
@@ -21,6 +21,7 @@ u<-runif(n)
 y<-as.numeric(u<prob) 
 
 
+
 #Log Likelihood Function
 logliklogit<-function(beta){
   Xb<-X%*%beta
@@ -31,7 +32,7 @@ logliklogit<-function(beta){
 
 gradlogit<-function(beta){
   Xb<-X%*%beta
-  lamXb<-(exp(Xb))/(exp(Xb)+1)
+  lamXb<-1/(exp(-Xb)+1)
   grad<-t(X)%*%(y-lamXb)
   return(-grad)
 }
@@ -46,12 +47,12 @@ hesslogit<-function(beta){
 
 #Initialise beta0 at least squares estimate
 beta0<-solve(t(X)%*%X,t(X)%*%y)
-
+# beta0 <- c(1,2)
 
 #Set Tolerance
 epsilon<-1E-10
 #Set Maximum Iterations
-MaxIter<-500
+MaxIter<-50
 #Initialise n
 n<-1 
 #Initialise xnew
