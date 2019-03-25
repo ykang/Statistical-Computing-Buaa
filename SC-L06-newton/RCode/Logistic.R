@@ -45,13 +45,13 @@ hesslogit<-function(beta){
 }
 
 #Initialise beta0 at least squares estimate
-beta0<-solve(t(X)%*%X,t(X)%*%y)
-
+# beta0<-solve(t(X)%*%X,t(X)%*%y)
+beta0 <- c(3,0,4)
 
 #Set Tolerance
 epsilon<-1E-10
 #Set Maximum Iterations
-MaxIter<-500
+MaxIter<-10
 #Initialise n
 n<-1 
 #Initialise xnew
