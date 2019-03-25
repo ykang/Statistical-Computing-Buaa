@@ -460,7 +460,7 @@ hess = function(beta){
 
 ## The optimization
 source('./RCode/newton.R')
-optimOut <- newton(function(beta){list(func(beta), grad(beta), hess(beta))}, c(1.1, 1.3))
+optimOut <- newton(function(beta){list(func(beta), grad(beta), hess(beta))}, c(-4, -5))
 beta0Hat <- optimOut[1]
 beta1Hat <- optimOut[2]
 yHat <- beta0Hat + beta1Hat * x

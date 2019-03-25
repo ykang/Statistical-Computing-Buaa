@@ -1,0 +1,81 @@
+---
+title: "Statistical Computing"
+author: "<br><br>Yanfei Kang <br> yanfeikang@buaa.edu.cn"
+date: "School of Economics and Management <br> Beihang University <br> http://yanfei.site"
+output:
+  ioslides_presentation:
+    logo: ../graphics/buaalogo.png
+    widescreen: yes
+subtitle: 'Lecture 10: Singular Value Decomposition'
+
+
+---
+
+<style>
+    slides > slide {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff=60),
+                      tidy = TRUE, 
+                      echo = TRUE)
+options(width = 60)
+```
+
+## Non-square matrices
+- Recall that if the matrix A is square (real or complex) then a diagonalisation may exist.
+    - This is clearly very useful for easy calculation of many important problems as we saw last week.
+    - If a diagonalisation doesn't exist, then there is always a triangularisation via Schur Decomposition.
+- But non-square matrices don’t have eigenvalues, so what can we do?
+- You are about to learn the most useful diagonal decomposition that works for all matrices: Singular Value Decomposition.
+
+##  Singular values
+
+- Singular values are the square roots of the eigenvalues of $A^TA$ which is square and symmetric
+- The singular vectors ($u$ and $v$) come in a pair for each
+singular value $\sigma$, such that $$A v = \sigma u.$$
+
+##  Generalising Eigen-Decomposition
+- Eigendecomposition involves only one eigenvector for each eigenvalue (including multiplicities), stored in an orthogonal matrix $Q$, with eigenvalues on the diagonal of the matrix $\Lambda$, so that $A=Q\lambda Q^T$.
+- We can generalise this now that we have singular vectors $u$ and $v$ for each singular value $\sigma$.
+
+## Singular Value Decomposition (SVD)
+
+For $A \in \mathcal{R}^{m \times n}$, there exists orthogonal matrices 
+$$U = [u_1, \cdots, u_m] \in \mathcal{R}^{m\times m}$$ and 
+$$V = [v_1, \cdots, v_n] \in \mathcal{R}^{n\times n}$$
+such that
+$$U^TAV = \Sigma = \text{diag}\{\sigma_1, \cdots, \sigma_p\} \in \mathcal{R}^{m\times n},$$
+with $p = \min\{m, n\}$ and $\sigma_1 \geq \dots \geq \sigma_p \geq 0$. 
+
+Rearranging, we have $$A = U\Sigma V$$.
+
+## SVD
+
+Try `svd()` in R.
+
+## Some properties of SVD 
+
+- $\sigma_i$ are singular values of $A$.
+- The non-zero singular values of $A$ are the square roots of the non-zero eigenvalues of both $A^TA$ and $AA^T$.
+- The rank of a matrix is equal to the number of non-zero singular values.
+- The condition number measures the degree of singularity of $A^TA$:
+$\kappa = \frac{\text{max singular value}}{\text{min singular value}}.$
+
+## Summary
+
+- SVD: Decomposition of any matrix $A$.
+- It works by eigendecomposition of $A^TA$ (or $AA^T$) which is square and symmetric.
+- We are now able to associate an orthogonal diagonal form with every matrix, and easily calculate useful properties of the matrix.
+- Over the next few lectures we will look at the fantastic applications of SVD.
+
+# Lab session
+
+##
+
+Peek into SVD and PCA in R, illustrate their relationship and write a short report.
+
