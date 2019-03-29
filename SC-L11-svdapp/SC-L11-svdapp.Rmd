@@ -141,7 +141,7 @@ $$m_i(t) = \alpha_{i1}s_1(t) + \cdots + a_{ir}s_r(t) + n_i(t),$$ where $t = 1, \
 
 ## SVD of signal matrix $M$
 
-- We can decompose $M$ using SVD: $M = U\SigmaV^T$.
+- We can decompose $M$ using SVD: $M = U\Sigma V^T$.
 - If the signal compared to the noise is sufficiently strong, we are likely to find clear distinction between the singular values due to the signal and those due to noise
 $$U = (U_s, U_n),~\Sigma = \left(\begin{array}{cc}
    \Sigma_s & \\
