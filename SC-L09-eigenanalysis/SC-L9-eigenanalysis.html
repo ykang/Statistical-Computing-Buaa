@@ -161,7 +161,7 @@
 
 <p>\[\mathbf{A} = \left(\begin{array}{cc}
    2 &amp; 0\\
-   0 &amp; 0
+   0 &amp; 3
    \end{array}\right),~\mathbf{x} = \left(\begin{array}{c}
    \cos\theta \\
    \sin\theta 
@@ -272,7 +272,7 @@
 <ul>
 <li>The ranking of page \(i\) is proportional to the sum of the rankings of all pages that link to \(i\): \(r_4 = \alpha(r_1 + r_2 + r_3)\).</li>
 <li>So this is a system of \(n =5\) linear equations: \[r = \alpha A^T r, ~\text{or}~A^T r = (1/\alpha) r.\]</li>
-<li>The ranking vector is treated like a probability of relevance, so we need to then rescale so that \(\Sigma_{i=1}^n = 1.\)</li>
+<li>The ranking vector is treated like a probability of relevance, so we need to then rescale so that \(\Sigma_{i=1}^n r_i = 1.\)</li>
 <li>Go to R and compute pageranks.</li>
 </ul>
 

@@ -81,9 +81,9 @@ English.
     + Derivative free methods
 - Computational Linear Algebra 
     + Eigenanalysis
-    + Singular value decomposition
+    + Singular value decomposition (SVD)
+    + Applications of SVD
     + Numerical algorithms for eigenanalysis
-    + Applications: Classification of handwritten digits and face images
 - ~~Simulation~~ 
     + Independent Monte Carlo
     + Markov Chain Monte Carlo
