@@ -37,7 +37,7 @@ options(width = 60)
 
 ## Matrix Approximation
 
-- Recall that the SVD of a matrix $A$ in $\mathcal{R}_{m\times n}$ decomposes the matrix into $$A = U\Sigma V = \left(\begin{array}{cc}U_1 & U_2\end{array}\right) \left(\begin{array}{cc}
+- Recall that the SVD of a matrix $A$ in $\mathcal{R}_{m\times n}$ decomposes the matrix into $$A = U\Sigma V^T = \left(\begin{array}{cc}U_1 & U_2\end{array}\right) \left(\begin{array}{cc}
    D & \\
     & 0
    \end{array}\right) \left(\begin{array}{cc}V_1^T & V_2^T\end{array}\right) = U_1^TDV_1^T$$
@@ -50,8 +50,9 @@ $$A = \Sigma_{i = 1}^r \sigma_i u_u v_i^T = \alpha_1 u_1 v_1^T + \cdots + \alpha
 
 ## SVD components
 
+
 <center>
-![](https://intoli.com/blog/pca-and-svd/img/svd-matrices.png)
+![](figs/svd.png)
 </center>
 
 ## Matrix Approximation Error
@@ -124,6 +125,14 @@ Here are four images with rank 286, 200, 116 and 32. How many numbers to store f
 plot(ykang.r.svd$d, type = 'l', ylab = 'Singular values')
 ```
 
+# Lab session
+
+##
+
+- Like in today’s lecture, take a high resolution image of yourself, and produce a sequence of low rank approximations.
+- How much can you save?
+
+
 # Noise reduction
 
 ## Noise reduction
@@ -165,10 +174,68 @@ for (j in c(3, 20, 50, 100)){
 }
 ```
 
+
+# Curve fitting
+
+## Curve fitting
+
+- Curve fitting seeks to approximate the data by fitting a curve that minimises the sum of the squared residual errors.
+- Over-determined linear system.
+- No exact solutions.
+- We find an approximation.
+
+## Linear regression
+
+For a linear regression, 
+$$\mathbf{y} = \mathbf{X}\mathbf{\beta} + \mathbf{\varepsilon},~\mathbf{\epsilon}\sim N(0,\Sigma).$$
+what is its OLS solution?
+
+##  Numerical Issues
+
+- Numerically, there can be problems with solving for $\mathbf{\beta}$ via the normal equations.
+    - The inverse of $X^TX$ might not exist
+    - It is not computationally efficient to invert it for large dimensions
+    - $X^TX$ maybe ill-conditioned
+- The SVD can help us by providing a numerically stable pseudo-inverse, and the opportunity to identify (through the singular values) any ill-conditioning.
+
+## Pseudo-inverse
+
+Recall that the SVD of a matrix $A$ in $\mathcal{R}_{m\times n}$ decomposes the matrix into $$A = U\Sigma V^T = \left(\begin{array}{cc}U_1 & U_2\end{array}\right) \left(\begin{array}{cc}
+   D & \\
+    & 0
+   \end{array}\right) \left(\begin{array}{cc}V_1^T & V_2^T\end{array}\right) = U_1^TDV_1^T$$
+where $D = \text{diag}\{\alpha_1, \cdots, \alpha_r\} \in \mathcal{R}^{r\times r}$ with $\sigma_r > 0$ for $r = \text{rank}(A)$.
+
+- The pseudo-inverse, or generalised inverse, of $A$ can always be calculated, even if 
+$A$ is not invertible.
+$$A^+ = V_1D^{-1}U_1^T$$
+- $A^{+}$ is $n \times m$.
+
+## Linear regression
+
+For $$\mathbf{y} = \mathbf{X}\mathbf{\beta} + \mathbf{\varepsilon},~\mathbf{\epsilon}\sim N(0,\Sigma).$$
+$$\beta = X^{+}y = V_1D^{-1}U_1^T y = \Sigma_{i = 1}^r \frac{v_iu_i^Ty}{\sigma_i}.$$
+A small singular value means trouble. A lower rank approximation should be more reliable.
+
+## An example of using generalised inverse
+
+```{r}
+X <- matrix(c(1, 2, 4, 8,
+              3, 6, 9, 12,
+              -11, -22, -32, -40), 4, 3)
+y <- 2 * X[,1] - 7 * X[,2] + 0.0001 * (rnorm(4) - 0.5)
+library(MASS)
+beta <- ginv(X) %*% y # write your own function to find generalised inverse
+t(y - X %*% beta) %*% (y - X %*% beta)
+```
+
+
 # Lab session
 
 ##
 
-- Like in today’s lecture, take a high resolution image of yourself, and produce a sequence of low rank approximations.
-- How much can you save?
+- Use generalised inverse to solve a linear regression problem, and compare with the `lm()` function in R.
+
+
+
 
