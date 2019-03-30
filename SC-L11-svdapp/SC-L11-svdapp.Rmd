@@ -213,7 +213,8 @@ $$A^+ = V_1D^{-1}U_1^T$$
 
 ## Linear regression
 
-For $$\mathbf{y} = \mathbf{X}\mathbf{\beta} + \mathbf{\varepsilon},~\mathbf{\epsilon}\sim N(0,\Sigma).$$
+For $$\mathbf{y} = \mathbf{X}\mathbf{\beta} + \mathbf{\varepsilon},~\mathbf{\epsilon}\sim N(0,\Sigma),$$
+the solution is 
 $$\beta = X^{+}y = V_1D^{-1}U_1^T y = \Sigma_{i = 1}^r \frac{v_iu_i^Ty}{\sigma_i}.$$
 A small singular value means trouble. A lower rank approximation should be more reliable.
 
