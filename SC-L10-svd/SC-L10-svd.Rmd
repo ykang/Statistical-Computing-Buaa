@@ -52,7 +52,7 @@ such that
 $$U^TAV = \Sigma = \text{diag}\{\sigma_1, \cdots, \sigma_p\} \in \mathcal{R}^{m\times n},$$
 with $p = \min\{m, n\}$ and $\sigma_1 \geq \dots \geq \sigma_p \geq 0$. 
 
-Rearranging, we have $$A = U\Sigma V$$.
+Rearranging, we have $$A = U\Sigma V^T$$.
 
 ## SVD
 

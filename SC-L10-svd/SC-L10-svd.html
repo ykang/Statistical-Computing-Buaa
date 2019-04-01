@@ -64,6 +64,10 @@
       font-style: italic;
     }
 
+    summary {
+      display: list-item;
+    }
+
     slides > slide {
       -webkit-transition: all 0.4s ease-in-out;
       -moz-transition: all 0.4s ease-in-out;
@@ -153,7 +157,7 @@
 
 <p>For \(A \in \mathcal{R}^{m \times n}\), there exists orthogonal matrices \[U = [u_1, \cdots, u_m] \in \mathcal{R}^{m\times m}\] and \[V = [v_1, \cdots, v_n] \in \mathcal{R}^{n\times n}\] such that \[U^TAV = \Sigma = \text{diag}\{\sigma_1, \cdots, \sigma_p\} \in \mathcal{R}^{m\times n},\] with \(p = \min\{m, n\}\) and \(\sigma_1 \geq \dots \geq \sigma_p \geq 0\).</p>
 
-<p>Rearranging, we have \[A = U\Sigma V\].</p>
+<p>Rearranging, we have \[A = U\Sigma V^T\].</p>
 
 </article></slide><slide class=""><hgroup><h2>SVD</h2></hgroup><article  id="svd">
 

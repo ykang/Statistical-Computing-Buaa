@@ -110,6 +110,7 @@ hess <- function(beta){
 # x<-(g-beta[1])/beta[2]
 # y<-rbinom(100,1,p)
 
+beta<-c(1,2)
 x <- rnorm(1000)
 g<-beta[1]+beta[2]*x
 p<-exp(g)/(1+exp(g))
