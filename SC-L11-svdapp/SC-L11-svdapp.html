@@ -21,7 +21,7 @@
       // Slide settings
       settings: {
                 title: 'Statistical Computing',
-                        subtitle: 'Lecture 11: Applications of SVD',
+                        subtitle: 'Lecture 11: Basic Applications of SVD',
                 useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -308,7 +308,7 @@ for (j in c(3, 20, 50, 100)) {
 <p>Recall that the SVD of a matrix \(A\) in \(\mathcal{R}_{m\times n}\) decomposes the matrix into \[A = U\Sigma V^T = \left(\begin{array}{cc}U_1 &amp; U_2\end{array}\right) \left(\begin{array}{cc}
    D &amp; \\
     &amp; 0
-   \end{array}\right) \left(\begin{array}{cc}V_1^T &amp; V_2^T\end{array}\right) = U_1^TDV_1^T\] where \(D = \text{diag}\{\alpha_1, \cdots, \alpha_r\} \in \mathcal{R}^{r\times r}\) with \(\sigma_r &gt; 0\) for \(r = \text{rank}(A)\).</p>
+   \end{array}\right) \left(\begin{array}{cc}V_1^T &amp; V_2^T\end{array}\right) = U_1DV_1^T\] where \(D = \text{diag}\{\alpha_1, \cdots, \alpha_r\} \in \mathcal{R}^{r\times r}\) with \(\sigma_r &gt; 0\) for \(r = \text{rank}(A)\).</p>
 
 <ul>
 <li>The pseudo-inverse, or generalised inverse, of \(A\) can always be calculated, even if \(A\) is not invertible. \[A^+ = V_1D^{-1}U_1^T\]</li>

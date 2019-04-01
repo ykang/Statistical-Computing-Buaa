@@ -82,8 +82,9 @@ English.
 - Computational Linear Algebra 
     + Eigenanalysis
     + Singular value decomposition (SVD)
-    + Applications of SVD
+    + Basic applications of SVD
     + Numerical algorithms for eigenanalysis
+    + Image recognition based SVD
 - ~~Simulation~~ 
     + Independent Monte Carlo
     + Markov Chain Monte Carlo

@@ -6,7 +6,7 @@ output:
   ioslides_presentation:
     logo: ../graphics/buaalogo.png
     widescreen: yes
-subtitle: 'Lecture 11: Applications of SVD'
+subtitle: 'Lecture 11: Basic Applications of SVD'
 
 
 ---
@@ -203,7 +203,7 @@ what is its OLS solution?
 Recall that the SVD of a matrix $A$ in $\mathcal{R}_{m\times n}$ decomposes the matrix into $$A = U\Sigma V^T = \left(\begin{array}{cc}U_1 & U_2\end{array}\right) \left(\begin{array}{cc}
    D & \\
     & 0
-   \end{array}\right) \left(\begin{array}{cc}V_1^T & V_2^T\end{array}\right) = U_1^TDV_1^T$$
+   \end{array}\right) \left(\begin{array}{cc}V_1^T & V_2^T\end{array}\right) = U_1DV_1^T$$
 where $D = \text{diag}\{\alpha_1, \cdots, \alpha_r\} \in \mathcal{R}^{r\times r}$ with $\sigma_r > 0$ for $r = \text{rank}(A)$.
 
 - The pseudo-inverse, or generalised inverse, of $A$ can always be calculated, even if 
