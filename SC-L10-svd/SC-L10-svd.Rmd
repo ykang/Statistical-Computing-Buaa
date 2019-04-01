@@ -64,7 +64,7 @@ Try `svd()` in R.
 - The non-zero singular values of $A$ are the square roots of the non-zero eigenvalues of both $A^TA$ and $AA^T$.
 - The rank of a matrix is equal to the number of non-zero singular values.
 - The condition number measures the degree of singularity of $A^TA$:
-$\kappa = \frac{\text{max singular value}}{\text{min singular value}}.$
+$$\kappa = \frac{\text{max singular value}}{\text{min singular value}}.$$
 
 ## Summary
 
