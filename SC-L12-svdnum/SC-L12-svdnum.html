@@ -64,6 +64,10 @@
       font-style: italic;
     }
 
+    summary {
+      display: list-item;
+    }
+
     slides > slide {
       -webkit-transition: all 0.4s ease-in-out;
       -moz-transition: all 0.4s ease-in-out;
@@ -144,11 +148,13 @@
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>The Power Method</h2></hgroup><article  id="the-power-method">
 
+</article></slide><slide class=""><hgroup><h2>The Power Method</h2></hgroup><article  id="the-power-method-1">
+
 <ul>
 <li>The Power Method finds the dominant eigenvalue \(\lambda_1\) and corresponding dominant eigenvector \(v_1\) of a matrix \(A\) – The dominant eigenvalue is the one with the largest modulus (absolute value for real eigenvalues) – The Power Method is an iterative approach that generates a sequence of scalars that converge to \(\lambda_1\) and a sequence of vectors that converge to \(v_1\) – The Power Method works well (converges quickly) when the dominant eigenvalue is clearly dominant</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>The Power Method</h2></hgroup><article  id="the-power-method-1">
+</article></slide><slide class=""><hgroup><h2>The Power Method</h2></hgroup><article  id="the-power-method-2">
 
 <ul>
 <li>It works by starting with an initial vector \(x_0\), transforming to \(x_1 = Ax_0\), transforming \(x_1\) to \(x_2 = Ax_1\), etc.</li>
@@ -176,7 +182,18 @@
 
 <p>Since the components of \(x_k\) just get larger and larger as the Power Method iterates, and we really just want to know the direction of \(v_1\) (not its magnitude), we normalise each \(x_k\).</p>
 
-<p>So the Power Method can be summarised as: - Set initial vector $q_0 = x_0/(||x_0||). - Repeat for k - Compute \(x_k = Aq_{k-1}\) - Normalise \(q_k = x_k/||x_k||\) - Estimate \(\lambda_k = q_k^TAq_k\)</p>
+<p>So the Power Method can be summarised as:</p>
+
+<ul>
+<li><p>Set initial vector \(q_0 = x_0/(||x_0||)\).</p></li>
+<li><p>Repeat for k</p>
+
+<ul>
+<li>Compute \(x_k = Aq_{k-1}\)</li>
+<li>Normalise \(q_k = x_k/||x_k||\)</li>
+<li>Estimate \(\lambda_k = q_k^TAq_k\)</li>
+</ul></li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Comments</h2></hgroup><article  id="comments">
 
@@ -215,7 +232,12 @@
 
 </article></slide><slide class=""><hgroup><h2>QR</h2></hgroup><article  id="qr">
 
-<p>For any \(m \times n\) matrix \(A\), we can express \(A\) as \(A = QR\). - \(Q\) is \(m\times m\), orthogonal - \(R\) is \(m\time n\), upper triangular</p>
+<p>For any \(m \times n\) matrix \(A\), we can express \(A\) as \(A = QR\).</p>
+
+<ul>
+<li>\(Q\) is \(m\times m\), orthogonal</li>
+<li>\(R\) is \(m\times n\), upper triangular</li>
+</ul>
 
 <p>For (non-square) tall matrices \(A\) with \(m &gt; n\), the last (\(m-n\)) rows of \(R\) are all zero, so we can express \(A\) as:</p>
 
