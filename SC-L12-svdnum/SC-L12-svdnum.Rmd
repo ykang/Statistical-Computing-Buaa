@@ -103,7 +103,7 @@ Now use The Power Method to redo your google pagerank problem
 
 ##  Eigenvalue Revealing Decomposition
 
-- It would be nice if we could get our matrix $A$ into an “eigenvalue revealing decomposition” like  Schur decomposition $A = QSQ^T$
+- It would be nice if we could get our matrix $A$ into an **eigenvalue revealing decomposition** like  Schur decomposition $A = QSQ^T$
 - So we can read off the eigenvalues (all of them) from the diagonal
 - We will do it iteratively using QR decomposition: $A = QR$ 
 - QR decomposition is not an eigenvalue revealing decomposition, but it will help us with our aim
@@ -111,11 +111,18 @@ Now use The Power Method to redo your google pagerank problem
 
 ## GSO algorithm
 
-![](figs/gso.png)
+Any set of basis vectors $(ɑ_1, ɑ_2, \cdots, ɑ_n)$ can be transformed to an orthonormal basis $(q_1,q_2,\cdots,q_n)$ by:
+
+<center>    
+<img src="./figs/gso.png" height="400px" />
+</center>
+
 
 ## GSO $\rightarrow$ QR
 
+<center>
 ![](figs/QR.png)
+</center>
 
 ## QR
 
@@ -127,7 +134,7 @@ For any $m \times n$ matrix $A$, we can express $A$ as $A = QR$.
 For (non-square) tall matrices $A$  with $m > n$, the last
 ($m-n$) rows of $R$ are all zero, so we can express $A$ as:
 
-$$ = QR = (Q_1, Q_2) \left(\begin{array}{cc}R_1 \\ \mathbf{0} \end{array}\right) = Q_1R_1.$$
+$$ A = QR = (Q_1, Q_2) \left(\begin{array}{cc}R_1 \\ \mathbf{0} \end{array}\right) = Q_1R_1.$$
 
 ## QR algorithm
 
@@ -143,7 +150,8 @@ This algorithm computes an upper triangular matrix $S$ and a unitary matrix $Q$ 
 
 ##
 
-Go to R code up QR algorithm.
+- Go to R code up QR algorithm.
+- Use QR algorithm on $A = \left( \begin{array}{cc}  1 & 2 \\ 3 & 4 \end{array}\right)$.Any set of basis vectors (ɑ1, ɑ2, ..., ɑn) can be transformed to an orthonormal basis (q1,q2,...,qn) by:
    
 ##  Solution to $Ax=b$ by QR
 
