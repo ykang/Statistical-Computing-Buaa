@@ -111,7 +111,7 @@ Now use The Power Method to redo your google pagerank problem
 
 ## GSO algorithm
 
-Any set of basis vectors $(ɑ_1, ɑ_2, \cdots, ɑ_n)$ can be transformed to an orthonormal basis $(q_1,q_2,\cdots,q_n)$ by:
+Any set of basis vectors $(a_1, a_2, \cdots, a_n)$ can be transformed to an orthonormal basis $(q_1,q_2,\cdots,q_n)$ by:
 
 <center>    
 <img src="./figs/gso.png" height="400px" />
@@ -142,8 +142,8 @@ This algorithm computes an upper triangular matrix $S$ and a unitary matrix $Q$ 
 
 1. Set $A_0 := A$.
 2. for $k = 1, 2, \cdots$, 
-    - $A_{k-1} = Q_kR_k.$
-    - $A_k := R_kQ_k.$
+    - $A_{k-1} = Q_{k-1}R_{k-1}.$
+    - $A_k := R_{k-1}Q_{k-1}.$
 3. Set $S := A_{\infty}.$
 
 # Lab session
@@ -151,8 +151,8 @@ This algorithm computes an upper triangular matrix $S$ and a unitary matrix $Q$ 
 ##
 
 - Go to R code up QR algorithm.
-- Use QR algorithm on $A = \left( \begin{array}{cc}  1 & 2 \\ 3 & 4 \end{array}\right)$.Any set of basis vectors (ɑ1, ɑ2, ..., ɑn) can be transformed to an orthonormal basis (q1,q2,...,qn) by:
-   
+- Use QR algorithm on $A = \left( \begin{array}{cc}  1 & 2 \\ 3 & 4 \end{array}\right)$.\
+
 ##  Solution to $Ax=b$ by QR
 
 If we have $A=QR$ or (even better) the economy form $A=Q_1R_1$, then the linear system $Ax = b$ can be easily solved:
@@ -171,7 +171,10 @@ Just as we can use $A=QR$ to avoid calculating $A^TA$ in the normal equations, w
 
 ##
 
-Use QR decomposition to write your own svd function in R.
+- Use QR decomposition to write your own `svd` function in R.
+- For linear regression, compare svd, pseudo-inverse and QR decomposition in R.
+
+
 
 
 

@@ -223,7 +223,7 @@
 
 </article></slide><slide class=""><hgroup><h2>GSO algorithm</h2></hgroup><article  id="gso-algorithm">
 
-<p>Any set of basis vectors \((ɑ_1, ɑ_2, \cdots, ɑ_n)\) can be transformed to an orthonormal basis \((q_1,q_2,\cdots,q_n)\) by:</p>
+<p>Any set of basis vectors \((a_1, a_2, \cdots, a_n)\) can be transformed to an orthonormal basis \((q_1,q_2,\cdots,q_n)\) by:</p>
 
 <center>
 
@@ -261,8 +261,8 @@
 <li>for \(k = 1, 2, \cdots\),
 
 <ul>
-<li>\(A_{k-1} = Q_kR_k.\)</li>
-<li>\(A_k := R_kQ_k.\)</li>
+<li>\(A_{k-1} = Q_{k-1}R_{k-1}.\)</li>
+<li>\(A_k := R_{k-1}Q_{k-1}.\)</li>
 </ul></li>
 <li>Set \(S := A_{\infty}.\)</li>
 </ol>
@@ -273,7 +273,7 @@
 
 <ul>
 <li>Go to R code up QR algorithm.</li>
-<li>Use QR algorithm on \(A = \left( \begin{array}{cc} 1 &amp; 2 \\ 3 &amp; 4 \end{array}\right)\).Any set of basis vectors (ɑ1, ɑ2, &#8230;, ɑn) can be transformed to an orthonormal basis (q1,q2,&#8230;,qn) by:</li>
+<li>Use QR algorithm on \(A = \left( \begin{array}{cc} 1 &amp; 2 \\ 3 &amp; 4 \end{array}\right)\).<br/></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Solution to \(Ax=b\) by QR</h2></hgroup><article  id="solution-to-axb-by-qr">
@@ -288,7 +288,10 @@
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-2">
 
-<p>Use QR decomposition to write your own svd function in R.</p></article></slide>
+<ul>
+<li>Use QR decomposition to write your own <code>svd</code> function in R.</li>
+<li>For linear regression, compare svd, pseudo-inverse and QR decomposition in R.</li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
