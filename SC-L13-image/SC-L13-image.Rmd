@@ -3,7 +3,6 @@ title: "Statistical Computing"
 author: "<br><br>Yanfei Kang <br> yanfeikang@buaa.edu.cn"
 date: "School of Economics and Management <br> Beihang University <br> http://yanfei.site"
 output:
-  beamer_presentation: default
   ioslides_presentation:
     logo: ../graphics/buaalogo.png
     widescreen: yes
@@ -39,7 +38,7 @@ options(width = 60)
 ## The image matrix for training sample. 256x1707
 azip <- read.table("azip.dat")
 
-## The true digits given in the training sample. lenght = 1707
+## The true digits given in the training sample. length = 1707
 dzip <- as.numeric(read.table("dzip.dat"))
 
 ## The testing image matrix. 256x2007
@@ -50,7 +49,7 @@ dtest <- read.table("dtest.dat")
 
 ## Display the image
 i <- 120
-image(matrix(azip[ , i], ncol = 16), col = gray(255:0/255))
+image(matrix(azip[ , i], ncol = 16)[, 16:1], col = gray(255:0/255))
 ```
 
 ##  The naive method
@@ -124,7 +123,7 @@ apply(img.dist, 1, which.min)-1
 ## The SVD method
 
 - We pick the digit 9 as an example in this method and plot the first ten singular image from the SVD decomposition.
-- We first use four bases, which yields the correct specification as follows We also tries to classify other digits which gives robust results. But when we increase more basis function, there comes the risk of overfitting.
+- We first use four bases, which yields the correct specification as follows. We also tries to classify other digits which gives robust results. But when we increase more basis function, there comes the risk of overfitting.
 - It maybe not a good idea to use all the bases but one can always pick up the bases according to the first kth largest eigen values.
 
 ##  The SVD method
@@ -155,7 +154,7 @@ for(i in 1:10)
 ## residuals.
 
 ## The testing digit matrix
-test.idx <- 3
+test.idx <- 2
 image(matrix(testzip[, test.idx], 16)[, 16:1], col = gray(255:0/255), main =
       paste("Testing digit"))
 
@@ -164,9 +163,8 @@ for(i in 0:9)
   {
     img.mat <- azip[, i == dzip, drop = FALSE]
     img.matSVD <- svd(img.mat)
-    ## basis.max <- ncol(img.matSVD$u)
-    basis.max <- 10
-
+    # basis.max <- ncol(img.matSVD$u)
+    basis.max <- 4
     resid.norm[i+1, ] <- norm(matrix(lm(testzip[, test.idx]~
                                         0+img.matSVD$u[, 1:basis.max])$resid), "F")
   }

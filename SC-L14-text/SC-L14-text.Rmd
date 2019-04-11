@@ -1,0 +1,82 @@
+---
+title: "Statistical Computing"
+author: "<br><br>Yanfei Kang <br> yanfeikang@buaa.edu.cn"
+date: "School of Economics and Management <br> Beihang University <br> http://yanfei.site"
+output:
+  ioslides_presentation:
+    logo: ../graphics/buaalogo.png
+    widescreen: yes
+subtitle: 'Lecture 14: SVD in Text Mining'
+---
+
+<style>
+    slides > slide {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff=60),
+                      tidy = TRUE, 
+                      echo = TRUE,
+                      fig.align = 'center')
+options(width = 60)
+```
+
+# What is text mining?
+
+## Raw human written text $\Rightarrow$ Structured information
+
+- The biggest difference between text mining and general data analysis is that it deals with text data, instead of numeric values. 
+- Sometimes text mining is called 'Natural Language Processing (NLP)', especially in computer science.
+- Most text mining methods are based on word frequency in real world.
+
+# What do you usually see in text mining?
+
+## Concepts in text mining
+
+- Corpus
+    - a collection of documents (e.g., a collection of different job description documents)
+- Word segment
+    - segment each text into words
+    - stopwords: common words that generally do not contribute to the meaning of a sentence, at least for the purposes of information retrieval and natural language processing. These are words such as the and a. Most search engines will filter out stopwords from search queries and documents in order to save space in their index.
+- DocumentTermMatrix
+    - Each row is a document, while each column shows word frequencies of the corresponding word.
+    - This is the very basic data structure for text mining.
+- TermDocumentMatrix
+- Text clustering
+    - Group similar documents together according to their similarities.
+- Topic models
+    - Find topics which the corpus is talking about.
+   
+# SVD in text mining
+
+## Latent Semantic Analysis (LSA)
+
+- Extract relationships between the documents and terms assuming that terms that are close in meaning will appear in similar (i.e., correlated) pieces of text.
+- LSA leverages a singular value decomposition (SVD) factorization of a term-document matrix to extract these relationships. $$A = U\Sigma V^T.$$
+- $U$ contains the eigenvectors of the term correlations, $AA^T$.
+- $V$ contains the eigenvectors of the document correlations, $A^TA$.
+
+
+## LSA to the Rescue!
+
+- LSA often remediates the curse of dimensionality problem in text analytics:
+    - The matrix factorization has the effect of combining columns, potentially enriching signal in the data.
+    - By selecting a fraction of the most important singular values, LSA can dramatically reduce dimensionality.
+- SVD is effective and is a staple of text analytics pipelines!
+
+## LSA applications - Term similarity
+
+<center>    
+<img src="http://www.analyticskhoj.com/wp-content/uploads/2015/04/Cluster-WordCloud.jpg" height="400px" />
+</center>
+
+
+## LSA applications -  Document similarity 
+
+<center>    
+<img src="http://www.analyticskhoj.com/wp-content/uploads/2015/04/Clustering-Documents.jpg" height="400px" />
+</center>

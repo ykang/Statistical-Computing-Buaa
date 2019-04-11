@@ -68,7 +68,7 @@ $$x_1 = Ax_0;~x_2 = Ax_1 = A^2x_0; \cdots; x_k = A^kx_0.$$
 
 So once we have an eigenvector estimate we can quickly estimate the corresponding eigenvalue
 
-$$Ax = \lambda x \Rightarrow x^T Ax = \lambda x^Tx \Rightarrow \lambda = \frac{x^TAx}{x^Tx} = \frac{x^TAX}{||x||^2} = q^TAq.$$
+$$Ax = \lambda x \Rightarrow x^T Ax = \lambda x^Tx \Rightarrow \lambda = \frac{x^TAx}{x^Tx} = \frac{x^TAx}{||x||^2} = q^TAq.$$
 
 ##  Practical Power method (normalised)
 
